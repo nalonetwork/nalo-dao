@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="NaloDAO - Building regenerative systems rooted in Earth Care, People Care, and Fair Share">
-    
-    <!-- Simplified Security Headers (removed CSP that might block Freighter) -->
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    
     <title>NaloDAO - Regenerative Systems on Stellar</title>
     
     <style>
@@ -36,7 +30,6 @@
             background-color: var(--bg-light);
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
             color: var(--white);
@@ -105,7 +98,6 @@
             color: white;
         }
 
-        /* Mobile Menu Toggle */
         .menu-toggle {
             display: none;
             background: none;
@@ -115,7 +107,6 @@
             cursor: pointer;
         }
 
-        /* Security Badge */
         .security-badge {
             position: fixed;
             bottom: 20px;
@@ -136,7 +127,6 @@
             content: "🔒";
         }
 
-        /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
             color: var(--white);
@@ -201,7 +191,6 @@
             color: var(--primary-green);
         }
 
-        /* Mission Section */
         .mission {
             max-width: 1200px;
             margin: 4rem auto;
@@ -247,7 +236,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Stellar Integration Section */
         .stellar-section {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: var(--white);
@@ -293,7 +281,6 @@
             font-size: 1.2rem;
         }
 
-        /* How It Works */
         .how-it-works {
             max-width: 1200px;
             margin: 4rem auto;
@@ -337,7 +324,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* CTA Section */
         .cta-section {
             background: var(--light-green);
             color: var(--white);
@@ -358,7 +344,6 @@
             margin-right: auto;
         }
 
-        /* Footer */
         footer {
             background: var(--primary-green);
             color: var(--white);
@@ -406,7 +391,6 @@
             opacity: 0.8;
         }
 
-        /* Wallet Modal */
         .modal {
             display: none;
             position: fixed;
@@ -481,6 +465,9 @@
             font-weight: 600;
             transition: all 0.3s;
             width: 100%;
+            text-decoration: none;
+            display: block;
+            text-align: center;
         }
 
         .action-btn:hover {
@@ -497,9 +484,10 @@
             font-family: monospace;
             font-size: 0.85rem;
             color: #333;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -542,7 +530,6 @@
             animation: spin 1s linear infinite;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -582,12 +569,9 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <nav>
-            <div class="logo">
-                🌱 NaloDAO
-            </div>
+            <div class="logo">🌱 NaloDAO</div>
             <button class="menu-toggle" aria-label="Toggle menu">☰</button>
             <ul class="nav-links">
                 <li><a href="#mission">Mission</a></li>
@@ -599,19 +583,15 @@
         </nav>
     </header>
 
-    <!-- Security Badge -->
     <div class="security-badge">Secured with HTTPS & Multi-Sig</div>
 
-    <!-- Wallet Modal -->
     <div id="walletModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Wallet Connection</h3>
                 <span class="close">&times;</span>
             </div>
-            <div id="walletStatus">
-                <p>Initializing wallet connection...</p>
-            </div>
+            <div id="walletStatus"></div>
             <div id="walletDetails" class="wallet-info" style="display:none;">
                 <p><strong>Connected Address:</strong></p>
                 <p id="publicKey" style="font-size: 0.9rem; color: #666;"></p>
@@ -623,7 +603,6 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <h1>Building Regenerative Systems</h1>
         <p>A decentralized autonomous organization rooted in Earth Care, People Care, and Fair Share. Powered by Stellar blockchain for transparent, efficient treasury management.</p>
@@ -633,7 +612,6 @@
         </div>
     </section>
 
-    <!-- Mission Section -->
     <section class="mission" id="mission">
         <h2>🌍 Our Three Ethics</h2>
         <div class="ethics-grid">
@@ -655,7 +633,6 @@
         </div>
     </section>
 
-    <!-- Stellar Integration Section -->
     <section class="stellar-section" id="stellar">
         <div class="stellar-content">
             <h2>⭐ Powered by Stellar Blockchain</h2>
@@ -689,7 +666,6 @@
         </div>
     </section>
 
-    <!-- How It Works -->
     <section class="how-it-works" id="how-it-works">
         <h2>How NaloDAO Works</h2>
         <div class="steps">
@@ -716,7 +692,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="cta-section" id="join">
         <h2>Ready to Build Regenerative Systems?</h2>
         <p>Join a global network of landowners, designers, and stewards creating abundance through Earth Care, People Care, and Fair Share.</p>
@@ -726,7 +701,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -766,186 +740,167 @@
         </div>
     </footer>
 
-    <!-- Completely Rewritten Wallet Script with Multiple Detection Methods -->
+    <!-- Load Freighter API from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
+
     <script>
-        (function() {
-            'use strict';
+        console.log('=== NaloDAO Wallet Manager v3.0 ===');
+        
+        const WalletManager = {
+            modal: null,
+            walletBtn: null,
+            closeBtn: null,
+            walletStatus: null,
+            walletDetails: null,
+            connectedKey: null,
             
-            console.log('=== NaloDAO Wallet Manager Starting ===');
-            
-            // Global state
-            let connectedPublicKey = null;
-            let detectionAttempts = 0;
-            const MAX_DETECTION_ATTEMPTS = 20;
-            const DETECTION_INTERVAL = 500;
-            
-            // DOM elements
-            const modal = document.getElementById('walletModal');
-            const walletBtn = document.getElementById('walletBtn');
-            const closeBtn = document.querySelector('.close');
-            const walletStatus = document.getElementById('walletStatus');
-            const walletDetails = document.getElementById('walletDetails');
-            
-            // Utility: Show status message
-            function showStatus(html) {
-                walletStatus.innerHTML = html;
-                walletStatus.style.display = 'block';
-                walletDetails.style.display = 'none';
-            }
-            
-            // Utility: Show connected state
-            function showConnected(publicKey) {
-                walletStatus.style.display = 'none';
-                walletDetails.style.display = 'block';
-                document.getElementById('publicKey').textContent = publicKey;
-                walletBtn.textContent = '✓ Connected';
-                walletBtn.classList.add('wallet-connected');
+            init() {
+                this.modal = document.getElementById('walletModal');
+                this.walletBtn = document.getElementById('walletBtn');
+                this.closeBtn = document.querySelector('.close');
+                this.walletStatus = document.getElementById('walletStatus');
+                this.walletDetails = document.getElementById('walletDetails');
                 
-                // Add disconnect button
+                this.walletBtn.onclick = () => this.openModal();
+                this.closeBtn.onclick = () => this.closeModal();
+                window.onclick = (e) => {
+                    if (e.target === this.modal) this.closeModal();
+                };
+                
+                this.checkExistingConnection();
+                
+                console.log('Wallet Manager initialized');
+            },
+            
+            async openModal() {
+                this.modal.style.display = 'block';
+                if (!this.connectedKey) {
+                    await this.connect();
+                }
+            },
+            
+            closeModal() {
+                this.modal.style.display = 'none';
+            },
+            
+            showStatus(html) {
+                this.walletStatus.innerHTML = html;
+                this.walletStatus.style.display = 'block';
+                this.walletDetails.style.display = 'none';
+            },
+            
+            showConnected(publicKey) {
+                this.walletStatus.style.display = 'none';
+                this.walletDetails.style.display = 'block';
+                document.getElementById('publicKey').textContent = publicKey;
+                this.walletBtn.textContent = '✓ Connected';
+                this.walletBtn.classList.add('wallet-connected');
+                
                 if (!document.getElementById('disconnectBtn')) {
                     const btn = document.createElement('button');
                     btn.id = 'disconnectBtn';
                     btn.className = 'action-btn';
                     btn.style.background = '#d32f2f';
                     btn.textContent = 'Disconnect Wallet';
-                    btn.onclick = disconnect;
-                    walletDetails.appendChild(btn);
+                    btn.onclick = () => this.disconnect();
+                    this.walletDetails.appendChild(btn);
                 }
-            }
+            },
             
-            // Method 1: Direct window check
-            function checkFreighterDirect() {
-                return typeof window.freighterApi !== 'undefined';
-            }
-            
-            // Method 2: Check for Freighter in window object keys
-            function checkFreighterInWindow() {
-                return 'freighterApi' in window;
-            }
-            
-            // Method 3: Try to access Freighter methods
-            function checkFreighterMethods() {
+            async connect() {
                 try {
-                    return window.freighterApi && 
-                           typeof window.freighterApi.isConnected === 'function';
-                } catch (e) {
-                    return false;
-                }
-            }
-            
-            // Comprehensive Freighter detection
-            async function detectFreighter() {
-                console.log(`Detection attempt ${detectionAttempts + 1}/${MAX_DETECTION_ATTEMPTS}`);
-                
-                const method1 = checkFreighterDirect();
-                const method2 = checkFreighterInWindow();
-                const method3 = checkFreighterMethods();
-                
-                console.log('Detection results:', { method1, method2, method3 });
-                
-                if (method1 || method2 || method3) {
-                    console.log('✓ Freighter detected!');
-                    return true;
-                }
-                
-                detectionAttempts++;
-                
-                if (detectionAttempts >= MAX_DETECTION_ATTEMPTS) {
-                    console.log('✗ Freighter not detected after max attempts');
-                    return false;
-                }
-                
-                // Wait and try again
-                await new Promise(resolve => setTimeout(resolve, DETECTION_INTERVAL));
-                return detectFreighter();
-            }
-            
-            // Connect to Freighter
-            async function connectWallet() {
-                try {
-                    console.log('Starting wallet connection...');
+                    console.log('Starting connection process...');
                     
-                    showStatus(`
-                        <div style="text-align: center; padding: 1rem;">
+                    this.showStatus(`
+                        <div style="text-align: center; padding: 2rem;">
                             <div class="spinner" style="margin: 0 auto 1rem;"></div>
-                            <p>🔍 Detecting Freighter wallet...</p>
-                            <p style="font-size: 0.85rem; color: #666;">
-                                Attempt ${detectionAttempts + 1} of ${MAX_DETECTION_ATTEMPTS}
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                                🔍 Checking for Freighter...
+                            </p>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                This will open your Freighter wallet
                             </p>
                         </div>
                     `);
                     
-                    const detected = await detectFreighter();
+                    // Wait a moment for page to fully load
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     
-                    if (!detected) {
-                        console.error('Freighter not detected');
-                        showStatus(`
-                            <div style="padding: 1rem;">
-                                <p style="color: #d32f2f; font-weight: 600; margin-bottom: 1rem;">
-                                    ⚠️ Freighter Wallet Not Detected
+                    // Check multiple API locations
+                    let freighterAPI = null;
+                    
+                    if (typeof window.freighterApi !== 'undefined') {
+                        freighterAPI = window.freighterApi;
+                        console.log('Found freighterApi');
+                    } else if (typeof window.freighter !== 'undefined') {
+                        freighterAPI = window.freighter;
+                        console.log('Found freighter');
+                    } else if (typeof freighterApi !== 'undefined') {
+                        freighterAPI = freighterApi;
+                        console.log('Found global freighterApi');
+                    }
+                    
+                    if (!freighterAPI) {
+                        console.error('Freighter API not found');
+                        this.showStatus(`
+                            <div style="padding: 1.5rem;">
+                                <p style="color: #d32f2f; font-weight: 600; font-size: 1.1rem; margin-bottom: 1rem;">
+                                    ⚠️ Freighter Not Detected
                                 </p>
-                                <div class="debug-info">
-                                    <strong>Debug Information:</strong><br>
-                                    Browser: ${navigator.userAgent.includes('Chrome') ? 'Chrome' : 
-                                              navigator.userAgent.includes('Firefox') ? 'Firefox' : 
-                                              navigator.userAgent.includes('Safari') ? 'Safari' : 'Other'}<br>
-                                    Window.freighterApi: ${typeof window.freighterApi}<br>
-                                    Detection attempts: ${detectionAttempts}
+                                <p style="margin-bottom: 1rem;">
+                                    Freighter wallet extension is required to connect.
+                                </p>
+                                <div style="background: #f5f5f5; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Installation Steps:</p>
+                                    <ol style="text-align: left; margin-left: 1.5rem; line-height: 2;">
+                                        <li>Click "Install Freighter" below</li>
+                                        <li>Add extension to Chrome</li>
+                                        <li>Create or import a wallet</li>
+                                        <li>Return here and click "Connect Wallet"</li>
+                                    </ol>
                                 </div>
-                                <p style="margin: 1rem 0;">Please ensure:</p>
-                                <ul style="text-align: left; margin-left: 2rem; line-height: 2;">
-                                    <li>Freighter extension is <strong>installed</strong></li>
-                                    <li>Extension is <strong>enabled</strong></li>
-                                    <li>You're using Chrome, Brave, Edge, or Firefox</li>
-                                    <li>You've <strong>refreshed</strong> after installing</li>
-                                </ul>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
-                                    <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" 
-                                       class="action-btn" style="text-decoration: none; text-align: center;">
-                                       Install Freighter Wallet
-                                    </a>
-                                    <button onclick="location.reload()" class="action-btn">
-                                        Refresh Page
-                                    </button>
-                                </div>
+                                <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" 
+                                   class="action-btn">
+                                   Install Freighter Wallet
+                                </a>
+                                <button onclick="location.reload()" class="action-btn" 
+                                        style="background: var(--accent-gold); color: var(--text-dark);">
+                                    I've Installed It - Refresh Page
+                                </button>
                             </div>
                         `);
                         return;
                     }
                     
-                    console.log('Freighter detected, requesting connection...');
+                    console.log('Freighter API found, requesting public key...');
                     
-                    showStatus(`
-                        <div style="text-align: center; padding: 1rem;">
-                            <p style="color: #4caf50; font-weight: 600; margin-bottom: 1rem;">
+                    this.showStatus(`
+                        <div style="text-align: center; padding: 2rem;">
+                            <p style="color: #4caf50; font-weight: 600; font-size: 1.1rem; margin-bottom: 1rem;">
                                 ✓ Freighter Detected!
                             </p>
-                            <p style="color: #ff9800;">
-                                🔐 Requesting connection...
+                            <p style="color: #ff9800; margin-bottom: 1rem;">
+                                🔐 Opening Freighter...
                             </p>
-                            <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
-                                Please approve in your Freighter popup
+                            <p style="font-size: 0.85rem; color: #666;">
+                                Please approve the connection request in the Freighter popup window
                             </p>
                         </div>
                     `);
                     
-                    // Request public key (triggers Freighter popup)
-                    const publicKey = await window.freighterApi.getPublicKey();
+                    const publicKey = await freighterAPI.getPublicKey();
                     
                     console.log('Public key received:', publicKey);
                     
-                    // Validate
                     if (!/^G[A-Z2-7]{55}$/.test(publicKey)) {
                         throw new Error('Invalid public key format');
                     }
                     
-                    // Store connection
-                    connectedPublicKey = publicKey;
+                    this.connectedKey = publicKey;
                     sessionStorage.setItem('nalo_wallet_connected', 'true');
                     sessionStorage.setItem('nalo_wallet_key', publicKey);
                     
-                    // Update UI
-                    showConnected(publicKey);
+                    this.showConnected(publicKey);
                     
                     console.log('✓ Wallet connected successfully');
                     
@@ -953,96 +908,72 @@
                     console.error('Connection error:', error);
                     
                     let errorMsg = 'Connection failed';
+                    let errorDetails = error.message;
+                    
                     if (error.message.includes('User declined') || error.message.includes('rejected')) {
-                        errorMsg = 'Connection declined';
+                        errorMsg = 'Connection Declined';
+                        errorDetails = 'You declined the connection request in Freighter.';
+                    } else if (error.message.includes('timeout')) {
+                        errorMsg = 'Connection Timeout';
+                        errorDetails = 'The connection request timed out. Please try again.';
                     }
                     
-                    showStatus(`
-                        <div style="padding: 1rem;">
-                            <p style="color: #d32f2f; font-weight: 600; margin-bottom: 0.5rem;">
+                    this.showStatus(`
+                        <div style="padding: 1.5rem;">
+                            <p style="color: #d32f2f; font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">
                                 ❌ ${errorMsg}
                             </p>
                             <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
-                                ${error.message}
+                                ${errorDetails}
                             </p>
-                            <button onclick="window.naloWallet.connect()" class="action-btn">
+                            <button onclick="window.WalletManager.connect()" class="action-btn">
                                 Try Again
                             </button>
                         </div>
                     `);
                 }
-            }
+            },
             
-            // Disconnect wallet
-            function disconnect() {
+            disconnect() {
                 console.log('Disconnecting wallet...');
-                connectedPublicKey = null;
+                this.connectedKey = null;
                 sessionStorage.removeItem('nalo_wallet_connected');
                 sessionStorage.removeItem('nalo_wallet_key');
                 
-                walletBtn.textContent = 'Connect Wallet';
-                walletBtn.classList.remove('wallet-connected');
+                this.walletBtn.textContent = 'Connect Wallet';
+                this.walletBtn.classList.remove('wallet-connected');
                 
-                showStatus('<p style="color: #4caf50; text-align: center; padding: 1rem;">✓ Disconnected</p>');
+                this.showStatus('<p style="color: #4caf50; text-align: center; padding: 2rem;">✓ Disconnected Successfully</p>');
                 
-                setTimeout(() => modal.style.display = 'none', 1500);
-            }
+                setTimeout(() => this.closeModal(), 1500);
+            },
             
-            // Open modal
-            function openModal() {
-                modal.style.display = 'block';
-                if (!connectedPublicKey) {
-                    detectionAttempts = 0; // Reset counter
-                    connectWallet();
-                }
-            }
-            
-            // Close modal
-            function closeModal() {
-                modal.style.display = 'none';
-            }
-            
-            // Check for existing connection
-            function checkExistingConnection() {
+            checkExistingConnection() {
                 const wasConnected = sessionStorage.getItem('nalo_wallet_connected');
                 const savedKey = sessionStorage.getItem('nalo_wallet_key');
                 
                 if (wasConnected && savedKey) {
                     console.log('Restoring previous connection...');
-                    connectedPublicKey = savedKey;
-                    walletBtn.textContent = '✓ Connected';
-                    walletBtn.classList.add('wallet-connected');
+                    this.connectedKey = savedKey;
+                    this.walletBtn.textContent = '✓ Connected';
+                    this.walletBtn.classList.add('wallet-connected');
                 }
             }
-            
-            // Event listeners
-            walletBtn.onclick = openModal;
-            closeBtn.onclick = closeModal;
-            window.onclick = (e) => {
-                if (e.target === modal) closeModal();
-            };
-            
-            // Initialize
-            checkExistingConnection();
-            
-            // Expose to window for debugging
-            window.naloWallet = {
-                connect: connectWallet,
-                disconnect: disconnect,
-                checkFreighter: () => {
-                    console.log('Freighter check:', {
-                        direct: checkFreighterDirect(),
-                        inWindow: checkFreighterInWindow(),
-                        methods: checkFreighterMethods(),
-                        type: typeof window.freighterApi
-                    });
-                }
-            };
-            
-            console.log('=== Wallet Manager Initialized ===');
-            console.log('Run window.naloWallet.checkFreighter() to debug');
-            
-        })();
+        };
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => WalletManager.init(), 500);
+            });
+        } else {
+            setTimeout(() => WalletManager.init(), 500);
+        }
+        
+        // Expose for debugging
+        window.WalletManager = WalletManager;
+        
+        console.log('Script loaded. Run WalletManager.connect() to test.');
     </script>
 </body>
 </html>
