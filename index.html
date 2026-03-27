@@ -83,6 +83,12 @@
             color: var(--accent-gold);
         }
 
+        .nav-links a.active {
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 0.25rem;
+        }
+
         .wallet-btn {
             background-color: var(--accent-gold);
             color: var(--text-dark);
@@ -198,6 +204,37 @@
         .btn-secondary:hover {
             background-color: var(--white);
             color: var(--primary-green);
+        }
+
+        /* Quick Stats Banner */
+        .quick-stats {
+            background: var(--white);
+            padding: 2rem;
+            margin: -3rem auto 4rem;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .quick-stat {
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-stat-label {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         /* Mission Section */
@@ -551,6 +588,11 @@
                 display: block;
             }
 
+            .quick-stats {
+                grid-template-columns: 1fr;
+                margin: -2rem 1rem 2rem;
+            }
+
             .mission h2,
             .stellar-section h2,
             .how-it-works h2,
@@ -581,10 +623,11 @@
             </div>
             <button class="menu-toggle" aria-label="Toggle menu">☰</button>
             <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="treasury.html">Treasury</a></li>
                 <li><a href="#mission">Mission</a></li>
                 <li><a href="#stellar">Stellar</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#join">Join Us</a></li>
                 <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
             </ul>
         </nav>
@@ -610,6 +653,9 @@
                 <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
                     ⚠️ Never share your private keys. NaloDAO will never ask for them.
                 </p>
+                <a href="treasury.html" class="action-btn" style="background: var(--accent-gold); color: var(--text-dark);">
+                    View Treasury Dashboard →
+                </a>
             </div>
         </div>
     </div>
@@ -619,10 +665,30 @@
         <h1>Building Regenerative Systems</h1>
         <p>A decentralized autonomous organization rooted in Earth Care, People Care, and Fair Share. Powered by Stellar blockchain for transparent, efficient treasury management.</p>
         <div class="cta-buttons">
-            <a href="#join" class="btn btn-primary">Join the DAO</a>
+            <a href="treasury.html" class="btn btn-primary">View Treasury</a>
             <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
         </div>
     </section>
+
+    <!-- Quick Stats Banner -->
+    <div class="quick-stats">
+        <div class="quick-stat">
+            <div class="quick-stat-value">$0.00</div>
+            <div class="quick-stat-label">Treasury Value</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">3 of 5</div>
+            <div class="quick-stat-label">Multi-Sig Security</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">0</div>
+            <div class="quick-stat-label">Active Projects</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">0</div>
+            <div class="quick-stat-label">Community Members</div>
+        </div>
+    </div>
 
     <!-- Mission Section -->
     <section class="mission" id="mission">
@@ -712,8 +778,8 @@
         <h2>Ready to Build Regenerative Systems?</h2>
         <p>Join a global network of landowners, designers, and stewards creating abundance through Earth Care, People Care, and Fair Share.</p>
         <div class="cta-buttons">
-            <a href="https://www.nalodesigns.com" class="btn btn-primary">Visit NaloDesigns</a>
-            <a href="mailto:hello@nalodesigns.com" class="btn btn-secondary">Contact Us</a>
+            <a href="treasury.html" class="btn btn-primary">View Treasury Dashboard</a>
+            <a href="https://www.nalodesigns.com" class="btn btn-secondary">Visit NaloDesigns</a>
         </div>
     </section>
 
@@ -727,9 +793,10 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
                     <li><a href="#mission">Our Mission</a></li>
                     <li><a href="#stellar">Stellar Integration</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
                     <li><a href="https://www.nalodesigns.com">NaloDesigns</a></li>
                 </ul>
             </div>
@@ -739,7 +806,7 @@
                     <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
                     <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
                     <li><a href="#">Whitepaper (Coming Soon)</a></li>
-                    <li><a href="#">Treasury Dashboard (Coming Soon)</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
                 </ul>
             </div>
             <div class="footer-section">
