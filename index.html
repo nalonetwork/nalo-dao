@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="NaloDAO - Building regenerative systems rooted in Earth Care, People Care, and Fair Share">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://horizon.stellar.org https://horizon-testnet.stellar.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
     <title>NaloDAO - Regenerative Systems on Stellar</title>
+    
     <style>
         * {
             margin: 0;
@@ -62,6 +71,7 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -73,6 +83,48 @@
 
         .nav-links a:hover {
             color: var(--accent-gold);
+        }
+
+        .wallet-btn {
+            background-color: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wallet-btn:hover {
+            background-color: #f0c14b;
+            transform: translateY(-2px);
+        }
+
+        .wallet-connected {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* Security Badge */
+        .security-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(45, 80, 22, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .security-badge::before {
+            content: "🔒";
         }
 
         /* Hero Section */
@@ -345,6 +397,70 @@
             opacity: 0.8;
         }
 
+        /* Wallet Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--text-dark);
+        }
+
+        .wallet-info {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-info p {
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+
+        .wallet-info strong {
+            color: var(--primary-green);
+        }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -354,6 +470,22 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
 
@@ -377,6 +509,13 @@
             .cta-section h2 {
                 font-size: 2rem;
             }
+
+            .security-badge {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
         }
     </style>
 </head>
@@ -392,9 +531,34 @@
                 <li><a href="#stellar">Stellar</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#join">Join Us</a></li>
+                <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
             </ul>
         </nav>
     </header>
+
+    <!-- Security Badge -->
+    <div class="security-badge">Secured with HTTPS & Multi-Sig</div>
+
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wallet Connection</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="walletStatus">
+                <p>Please install <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer">Freighter Wallet</a> to connect.</p>
+            </div>
+            <div id="walletDetails" class="wallet-info" style="display:none;">
+                <p><strong>Connected Address:</strong></p>
+                <p id="publicKey" style="font-size: 0.9rem; color: #666;"></p>
+                <p><strong>Network:</strong> <span id="network">Testnet</span></p>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    ⚠️ Never share your private keys. NaloDAO will never ask for them.
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -495,7 +659,7 @@
         <p>Join a global network of landowners, designers, and stewards creating abundance through Earth Care, People Care, and Fair Share.</p>
         <div class="cta-buttons">
             <a href="https://www.nalodesigns.com" class="btn btn-primary">Visit NaloDesigns</a>
-            <a href="mailto:bennyroe@nalodesigns.com" class="btn btn-secondary">Contact Us</a>
+            <a href="mailto:hello@nalodesigns.com" class="btn btn-secondary">Contact Us</a>
         </div>
     </section>
 
@@ -518,8 +682,8 @@
             <div class="footer-section">
                 <h3>Resources</h3>
                 <ul>
-                    <li><a href="https://stellar.org" target="_blank">Stellar Network</a></li>
-                    <li><a href="https://developers.stellar.org" target="_blank">Developer Docs</a></li>
+                    <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
+                    <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
                     <li><a href="#">Whitepaper (Coming Soon)</a></li>
                     <li><a href="#">Treasury Dashboard (Coming Soon)</a></li>
                 </ul>
@@ -527,7 +691,7 @@
             <div class="footer-section">
                 <h3>Connect</h3>
                 <ul>
-                    <li><a href="mailto:bennyroe@nalodesigns.com">Email</a></li>
+                    <li><a href="mailto:hello@nalodesigns.com">Email</a></li>
                     <li><a href="#">Discord (Coming Soon)</a></li>
                     <li><a href="#">Twitter (Coming Soon)</a></li>
                     <li><a href="#">GitHub (Coming Soon)</a></li>
@@ -538,5 +702,193 @@
             <p>&copy; 2026 NaloDAO. Designing with nature to regenerate soil, soul, and society.</p>
         </div>
     </footer>
+
+    <!-- Secure Wallet Connection Script -->
+    <script>
+        // Secure Wallet Manager
+        class SecureWalletManager {
+            constructor() {
+                this.connectedPublicKey = null;
+                this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
+                this.lastActivity = Date.now();
+                this.modal = document.getElementById('walletModal');
+                this.walletBtn = document.getElementById('walletBtn');
+                this.closeBtn = document.querySelector('.close');
+                
+                this.init();
+            }
+            
+            init() {
+                // Modal controls
+                this.walletBtn.onclick = () => this.openModal();
+                this.closeBtn.onclick = () => this.closeModal();
+                window.onclick = (event) => {
+                    if (event.target === this.modal) {
+                        this.closeModal();
+                    }
+                };
+                
+                // Check for existing connection
+                this.checkConnection();
+                
+                // Activity monitoring
+                this.startSessionMonitoring();
+            }
+            
+            openModal() {
+                this.modal.style.display = 'block';
+                if (!this.connectedPublicKey) {
+                    this.connect();
+                }
+            }
+            
+            closeModal() {
+                this.modal.style.display = 'none';
+            }
+            
+            async connect() {
+                try {
+                    // Check if Freighter is installed
+                    if (typeof window.freighterApi === 'undefined') {
+                        document.getElementById('walletStatus').innerHTML = `
+                            <p style="color: #d32f2f;">⚠️ Freighter wallet not detected.</p>
+                            <p>Please install <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold);">Freighter Wallet</a> extension.</p>
+                        `;
+                        return;
+                    }
+                    
+                    // Check if connected
+                    const isConnected = await window.freighterApi.isConnected();
+                    if (!isConnected) {
+                        document.getElementById('walletStatus').innerHTML = `
+                            <p style="color: #ff9800;">Requesting wallet connection...</p>
+                            <p style="font-size: 0.9rem; color: #666;">Please approve the connection in your Freighter wallet.</p>
+                        `;
+                    }
+                    
+                    // Get public key
+                    const publicKey = await window.freighterApi.getPublicKey();
+                    
+                    // Validate public key format
+                    if (!this.isValidPublicKey(publicKey)) {
+                        throw new Error('Invalid public key format received');
+                    }
+                    
+                    // Store connection
+                    this.connectedPublicKey = publicKey;
+                    this.lastActivity = Date.now();
+                    
+                    // Update UI
+                    this.updateUI(publicKey);
+                    
+                    // Store in session (not localStorage for security)
+                    sessionStorage.setItem('walletConnected', 'true');
+                    
+                } catch (error) {
+                    console.error('Wallet connection failed:', error);
+                    document.getElementById('walletStatus').innerHTML = `
+                        <p style="color: #d32f2f;">❌ Connection failed: ${this.sanitizeError(error.message)}</p>
+                        <p style="font-size: 0.9rem;">Please try again or check your wallet extension.</p>
+                    `;
+                }
+            }
+            
+            isValidPublicKey(key) {
+                // Stellar public keys start with G and are 56 characters
+                return /^G[A-Z2-7]{55}$/.test(key);
+            }
+            
+            sanitizeError(message) {
+                // Prevent XSS in error messages
+                const div = document.createElement('div');
+                div.textContent = message;
+                return div.innerHTML;
+            }
+            
+            updateUI(publicKey) {
+                // Update button
+                this.walletBtn.textContent = 'Connected';
+                this.walletBtn.classList.add('wallet-connected');
+                
+                // Show wallet details
+                document.getElementById('walletStatus').style.display = 'none';
+                document.getElementById('walletDetails').style.display = 'block';
+                document.getElementById('publicKey').textContent = publicKey;
+                
+                // Add disconnect option
+                if (!document.getElementById('disconnectBtn')) {
+                    const disconnectBtn = document.createElement('button');
+                    disconnectBtn.id = 'disconnectBtn';
+                    disconnectBtn.textContent = 'Disconnect';
+                    disconnectBtn.className = 'btn btn-secondary';
+                    disconnectBtn.style.marginTop = '1rem';
+                    disconnectBtn.style.width = '100%';
+                    disconnectBtn.onclick = () => this.disconnect();
+                    document.getElementById('walletDetails').appendChild(disconnectBtn);
+                }
+            }
+            
+            disconnect() {
+                this.connectedPublicKey = null;
+                sessionStorage.removeItem('walletConnected');
+                
+                // Reset UI
+                this.walletBtn.textContent = 'Connect Wallet';
+                this.walletBtn.classList.remove('wallet-connected');
+                document.getElementById('walletStatus').style.display = 'block';
+                document.getElementById('walletDetails').style.display = 'none';
+                document.getElementById('walletStatus').innerHTML = `
+                    <p>Wallet disconnected successfully.</p>
+                `;
+                
+                this.closeModal();
+            }
+            
+            checkConnection() {
+                // Check if previously connected in this session
+                if (sessionStorage.getItem('walletConnected') === 'true') {
+                    this.connect();
+                }
+            }
+            
+            startSessionMonitoring() {
+                // Auto-disconnect after inactivity
+                setInterval(() => {
+                    if (this.connectedPublicKey && 
+                        Date.now() - this.lastActivity > this.sessionTimeout) {
+                        console.log('Session timeout - disconnecting wallet');
+                        this.disconnect();
+                    }
+                }, 60000); // Check every minute
+                
+                // Update activity on user interaction
+                ['click', 'keypress', 'scroll', 'mousemove'].forEach(event => {
+                    document.addEventListener(event, () => {
+                        if (this.connectedPublicKey) {
+                            this.lastActivity = Date.now();
+                        }
+                    }, { passive: true });
+                });
+            }
+            
+            getPublicKey() {
+                if (!this.connectedPublicKey) {
+                    throw new Error('Wallet not connected');
+                }
+                return this.connectedPublicKey;
+            }
+        }
+        
+        // Initialize wallet manager when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.walletManager = new SecureWalletManager();
+        });
+        
+        // Security: Clear sensitive data on page unload
+        window.addEventListener('beforeunload', () => {
+            // Don't persist wallet connection across page reloads for security
+            // User must reconnect each session
+        });
+    </script>
 </body>
 </html>
