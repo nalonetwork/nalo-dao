@@ -36,12 +36,6 @@ function initTreasuryDashboard() {
         showConnectPrompt();
     }
     
-    // Set up connect button
-    const connectBtn = document.getElementById('connectBtn');
-    if (connectBtn) {
-        connectBtn.onclick = handleWalletConnect;
-    }
-    
     console.log('✓ Treasury Dashboard initialized');
 }
 
@@ -270,6 +264,9 @@ function showError(message) {
         <div class="empty-state">
             <div class="empty-state-icon">⚠️</div>
             <p>${message}</p>
+            <button onclick="loadTreasuryData()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--light-green); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                Try Again
+            </button>
         </div>
     `;
     
@@ -283,17 +280,5 @@ if (document.readyState === 'loading') {
 } else {
     initTreasuryDashboard();
 }
-
-// Listen for wallet connection events
-window.addEventListener('storage', function(e) {
-    if (e.key === 'nalo_wallet_connected') {
-        if (e.newValue === 'true') {
-            showDashboard();
-            loadTreasuryData();
-        } else {
-            showConnectPrompt();
-        }
-    }
-});
 
 console.log('=== Treasury Manager Script Loaded ===');
