@@ -63,8 +63,6 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
-            color: var(--white);
         }
 
         .nav-links {
@@ -120,6 +118,44 @@
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--primary-green);
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu .wallet-btn {
+            width: 100%;
+            margin-top: 1rem;
         }
 
         /* Security Badge */
@@ -575,11 +611,11 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .hero p {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
 
             .nav-links {
@@ -593,6 +629,55 @@
             .quick-stats {
                 grid-template-columns: 1fr;
                 margin: -2rem 1rem 2rem;
+                padding: 1.5rem;
+            }
+
+            .quick-stat-value {
+                font-size: 1.5rem;
+            }
+
+            .ethics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                width: 95%;
+                max-width: 95%;
+                padding: 1.5rem;
+            }
+
+            .wallet-info {
+                font-size: 0.9rem;
+            }
+
+            .wallet-btn,
+            .btn,
+            .action-btn {
+                min-height: 48px;
+                font-size: 1rem;
             }
 
             .mission h2,
@@ -608,10 +693,28 @@
                 font-size: 0.75rem;
                 padding: 0.4rem 0.8rem;
             }
+        }
 
-            .modal-content {
-                margin: 20% auto;
-                width: 95%;
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .mission h2,
+            .stellar-section h2,
+            .how-it-works h2,
+            .cta-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .ethic-card,
+            .feature-card,
+            .step {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -620,19 +723,19 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="index.html" class="logo">
+            <div class="logo">
                 🌱 NaloDAO
-            </a>
+            </div>
             <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-                <ul class="nav-links">
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="treasury.html">Treasury</a></li>
-                    <li><a href="whitepaper.html">Whitepaper</a></li>
-                    <li><a href="#mission">Mission</a></li>
-                    <li><a href="#stellar">Stellar</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
-                </ul>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="treasury.html">Treasury</a></li>
+                <li><a href="whitepaper.html">Whitepaper</a></li>
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#stellar">Stellar</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
+            </ul>
         </nav>
     </header>
 
@@ -795,21 +898,21 @@
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="treasury.html">Treasury Dashboard</a></li>
-                        <li><a href="whitepaper.html">Whitepaper</a></li>
-                        <li><a href="#mission">Our Mission</a></li>
-                        <li><a href="#stellar">Stellar Integration</a></li>
-                        <li><a href="https://www.nalodesigns.com">NaloDesigns</a></li>
-                    </ul>
-             </div>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
+                    <li><a href="whitepaper.html">Whitepaper</a></li>
+                    <li><a href="#mission">Our Mission</a></li>
+                    <li><a href="#stellar">Stellar Integration</a></li>
+                    <li><a href="https://www.nalodesigns.com">NaloDesigns</a></li>
+                </ul>
+            </div>
             <div class="footer-section">
                 <h3>Resources</h3>
                 <ul>
                     <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
                     <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
-                    <li><a href="#">Whitepaper (Coming Soon)</a></li>
+                    <li><a href="whitepaper.html">Whitepaper</a></li>
                     <li><a href="treasury.html">Treasury Dashboard</a></li>
                 </ul>
             </div>
@@ -833,5 +936,46 @@
     
     <!-- Load NaloDAO Wallet Manager -->
     <script src="js/wallet.js"></script>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                let mobileMenu = document.querySelector('.mobile-menu');
+                
+                if (!mobileMenu) {
+                    mobileMenu = document.createElement('div');
+                    mobileMenu.className = 'mobile-menu';
+                    mobileMenu.innerHTML = navLinks.innerHTML;
+                    document.body.appendChild(mobileMenu);
+                }
+                
+                mobileMenu.classList.toggle('active');
+                
+                if (mobileMenu.classList.contains('active')) {
+                    menuToggle.textContent = '✕';
+                } else {
+                    menuToggle.textContent = '☰';
+                }
+            });
+        }
+        
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                if (!mobileMenu.contains(event.target) && event.target !== menuToggle) {
+                    mobileMenu.classList.remove('active');
+                    if (menuToggle) {
+                        menuToggle.textContent = '☰';
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
