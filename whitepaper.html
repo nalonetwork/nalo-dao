@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NaloDAO Whitepaper - A Regenerative Economy for Earth. Building decentralized systems that reward ecological restoration.">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>Whitepaper - NaloDAO</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2d5016;
+            --light-green: #4a7c2c;
+            --accent-gold: #d4af37;
+            --earth-brown: #8b6f47;
+            --bg-light: #f8f9f5;
+            --text-dark: #2c3e20;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-links a.active {
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 0.25rem;
+        }
+
+        /* Whitepaper Container */
+        .whitepaper {
+            max-width: 900px;
+            margin: 100px auto 2rem;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .whitepaper-hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 3px solid var(--accent-gold);
+            margin-bottom: 3rem;
+        }
+
+        .whitepaper-hero h1 {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .whitepaper-hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--earth-brown);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .whitepaper-hero .tagline {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Download Button */
+        .download-section {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #f0c14b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .toc h2 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .toc ol {
+            list-style-position: inside;
+            padding-left: 1rem;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--primary-green);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        .content-section h3 {
+            color: var(--light-green);
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section h4 {
+            color: var(--earth-brown);
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content-section ul, .content-section ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content-section strong {
+            color: var(--primary-green);
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid var(--accent-gold);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        table th {
+            background: var(--light-green);
+            color: var(--white);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Images */
+        .diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #0c5460;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .warning-box strong {
+            color: #856404;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .success-box strong {
+            color: #155724;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .whitepaper {
+                margin-top: 80px;
+            }
+
+            .whitepaper-hero h1 {
+                font-size: 2rem;
+            }
+
+            .whitepaper-hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            background: #f0c14b;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">🌱 NaloDAO</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="treasury.html">Treasury</a></li>
+                <li><a href="whitepaper.html" class="active">Whitepaper</a></li>
+                <li><a href="index.html#mission">Mission</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Whitepaper Content -->
+    <div class="whitepaper">
+        
+        <!-- Hero Section -->
+        <div class="whitepaper-hero">
+            <h1>🌱 NaloDAO Whitepaper</h1>
+            <p class="subtitle">A Regenerative Economy for Earth</p>
+            <p class="tagline">Building decentralized systems that reward ecological restoration, empower communities, and align value with life</p>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <p style="margin-bottom: 1rem; font-size: 1.1rem;">Download the complete whitepaper</p>
+            <a href="#" class="download-btn">📥 Download PDF (Coming Soon)</a>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">Version 1.0 | Last Updated: March 27, 2026</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc" id="toc">
+            <h2>📑 Table of Contents</h2>
+            <ol>
+                <li><a href="#executive-summary">Executive Summary</a></li>
+                <li><a href="#the-problem">The Problem: Broken Systems</a></li>
+                <li><a href="#the-solution">The Solution: Regenerative Coordination</a></li>
+                <li><a href="#what-is-nalodao">What is NaloDAO?</a></li>
+                <li><a href="#core-philosophy">Core Philosophy: Three Ethics</a></li>
+                <li><a href="#nalo-token">The NALO Token</a></li>
+                <li><a href="#how-it-works">How NaloDAO Works</a></li>
+                <li><a href="#living-libraries">Living Libraries</a></li>
+                <li><a href="#technology">Technology Stack</a></li>
+                <li><a href="#governance">Governance Model</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#participate">How to Participate</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ol>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="content-section" id="executive-summary">
+            <h2>Executive Summary</h2>
+            <p><strong>NaloDAO is a decentralized autonomous organization (DAO) built to fund, verify, and reward regenerative action on Earth.</strong></p>
+            
+            <p>We exist at the intersection of blockchain technology and ecological restoration—using transparent, community-governed systems to direct capital toward projects that heal land, strengthen communities, and restore living systems.</p>
+            
+            <p>Unlike traditional organizations, NaloDAO operates without centralized control. Decisions are made collectively by contributors through on-chain voting. Impact is verified transparently through real-world evidence. Value flows to those doing the work—not extracted by intermediaries.</p>
+            
+            <div class="success-box">
+                <strong>Our Mission:</strong> To create a regenerative economy where caring for Earth is not just valued—it's rewarded.
+            </div>
+            
+            <div class="info-box">
+                <strong>Our Vision:</strong> A global network of bioregional communities coordinating resources, sharing knowledge, and governing commons-based systems that prioritize life over profit.
+            </div>
+        </div>
+
+        <!-- The Problem -->
+        <div class="content-section" id="the-problem">
+            <h2>The Problem: Broken Systems</h2>
+            
+            <h3>The Extractive Economy</h3>
+            <p>Our current economic system is designed for extraction, not regeneration:</p>
+            <ul>
+                <li><strong>Soil is disappearing</strong> faster than it can regenerate</li>
+                <li><strong>Billions of dollars</strong> flow to climate conferences with minimal ground-level impact</li>
+                <li><strong>Regenerative leaders</strong> struggle to access even microgrants</li>
+                <li><strong>Ecosystems are sacrificed</strong> for quarterly profits</li>
+                <li><strong>Communities with deep ecological knowledge</strong> remain underfunded and underrepresented</li>
+            </ul>
+            
+            <h3>Misaligned Incentives</h3>
+            <p>The problem isn't lack of solutions. We know how to reforest degraded land, restore coral reefs, build regenerative food systems, and decentralize governance.</p>
+            
+            <p><strong>The issue is that incentives are misaligned:</strong></p>
+            <ul>
+                <li>Funding is top-down and bureaucratic</li>
+                <li>Verification is gatekept by institutions</li>
+                <li>Impact is obscured by paperwork and PR</li>
+                <li>Capital pools at the top instead of circulating through communities</li>
+            </ul>
+        </div>
+
+        <!-- The Solution -->
+        <div class="content-section" id="the-solution">
+            <h2>The Solution: Regenerative Coordination</h2>
+            
+            <h3>What is Regeneration?</h3>
+            <p><strong>Regeneration goes beyond sustainability.</strong> Where sustainability asks "how do we do less harm?", regeneration asks "how can we restore, renew, and enliven?"</p>
+            
+            <p>Regeneration is:</p>
+            <ul>
+                <li><strong>Cyclic, not linear</strong> — Everything returns to the source</li>
+                <li><strong>Resilient, not rigid</strong> — Feedback loops adapt and evolve</li>
+                <li><strong>Diverse and decentralized</strong> — Monocultures collapse; networks thrive</li>
+                <li><strong>Collaborative, not competitive</strong> — Mutual aid, symbiosis, cooperation</li>
+            </ul>
+            
+            <blockquote>
+                "These principles apply to gardens and governance alike. A forest doesn't have a CEO. It has emergent order. So can our economies."
+            </blockquote>
+        </div>
+
+        <!-- What is NaloDAO -->
+        <div class="content-section" id="what-is-nalodao">
+            <h2>What is NaloDAO?</h2>
+            
+            <h3>Origin Story</h3>
+            <p>NaloDAO was born from the soil—in compost piles on small islands, in conversations under mango trees, and in the quiet knowing that our future depends on communities reclaiming the power to regenerate.</p>
+            
+            <p>The name "Nalo" means "wave" or "to float" in several languages—a fitting metaphor for a project born at the edge of land and sea, designed to flow resources where they're needed most.</p>
+            
+            <h3>Definition</h3>
+            <p><strong>NaloDAO is a regenerative coordination system</strong> that:</p>
+            <ol>
+                <li><strong>Governs Funds</strong> — DAO members vote on where funding goes</li>
+                <li><strong>Issues Tokens</strong> — Creates NALO tokens for governance and rewards</li>
+                <li><strong>Verifies Impact</strong> — Uses on-ground evidence to confirm real outcomes</li>
+                <li><strong>Rewards Regeneration</strong> — Pays contributors for ecological and social work</li>
+                <li><strong>Connects Communities</strong> — Hosts platforms and physical hubs for collaboration</li>
+            </ol>
+            
+            <h3>What Makes NaloDAO Different</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Traditional Systems</th>
+                        <th>NaloDAO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Centralized control</td>
+                        <td>Distributed governance</td>
+                    </tr>
+                    <tr>
+                        <td>Opaque funding</td>
+                        <td>Transparent on-chain flows</td>
+                    </tr>
+                    <tr>
+                        <td>Slow bureaucracy</td>
+                        <td>Direct peer-to-peer funding</td>
+                    </tr>
+                    <tr>
+                        <td>Top-down decisions</td>
+                        <td>Community-led proposals</td>
+                    </tr>
+                    <tr>
+                        <td>Extractive capital</td>
+                        <td>Regenerative circulation</td>
+                    </tr>
+                    <tr>
+                        <td>Speculation-driven</td>
+                        <td>Impact-driven</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Core Philosophy -->
+        <div class="content-section" id="core-philosophy">
+            <h2>Core Philosophy: Three Ethics</h2>
+            <p>NaloDAO is guided by three ethical pillars rooted in permaculture:</p>
+            
+            <h3>1. 🌍 Earth Care</h3>
+            <p><strong>Regenerating the Source</strong></p>
+            <p>Earth is not a backdrop to the economy—it is the foundation of all wealth.</p>
+            <p><strong>Earth Care means:</strong></p>
+            <ul>
+                <li>Protecting and restoring ecosystems</li>
+                <li>Designing with nature, not against it</li>
+                <li>Honoring land as a living being</li>
+            </ul>
+            
+            <h3>2. 🤝 People Care</h3>
+            <p><strong>Empowering the Stewards</strong></p>
+            <p>Healthy systems depend on healthy people.</p>
+            <p><strong>People Care means:</strong></p>
+            <ul>
+                <li>Supporting local leadership and cultural wisdom</li>
+                <li>Prioritizing equity and access</li>
+                <li>Ensuring all participants feel seen, heard, and valued</li>
+            </ul>
+            
+            <h3>3. ⚖️ Fair Share</h3>
+            <p><strong>Rebalancing the Flow</strong></p>
+            <p>Fair Share is about equity, not charity.</p>
+            <p><strong>NaloDAO's economic model includes:</strong></p>
+            <ul>
+                <li>Transparent token distribution</li>
+                <li>Regenerative reinvestment mechanisms</li>
+                <li>Cooperative ownership structures</li>
+                <li>Capped gains to prevent wealth concentration</li>
+            </ul>
+        </div>
+
+        <!-- NALO Token -->
+        <div class="content-section" id="nalo-token">
+            <h2>The NALO Token</h2>
+            
+            <h3>What is NALO?</h3>
+            <p><strong>NALO is not just currency—it's a tool for coordination, reward, and regeneration.</strong></p>
+            
+            <p>The NALO token (represented as <strong>$NALO</strong> in crypto convention) serves three primary functions:</p>
+            <ol>
+                <li><strong>🗳️ Governance</strong> — Vote on proposals, funding decisions, and protocol changes</li>
+                <li><strong>💰 Rewards</strong> — Earn tokens for verified regenerative contributions</li>
+                <li><strong>🔑 Access</strong> — Unlock resources, tools, and community benefits</li>
+            </ol>
+            
+            <h3>Token Design Principles</h3>
+            <p>NALO is designed with <strong>regenerative economics</strong> in mind:</p>
+            <ul>
+                <li><strong>Utility-first</strong> — Value tied to real-world outcomes, not speculation</li>
+                <li><strong>Slow growth</strong> — Designed for stability and long-term value</li>
+                <li><strong>Circular flow</strong> — Tokens circulate through the ecosystem, not extracted</li>
+                <li><strong>Earned value</strong> — Distributed through contribution, not just capital</li>
+            </ul>
+            
+            <h3>Tokenomics Overview</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Allocation</th>
+                        <th>Percentage</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Community Treasury</td>
+                        <td>40%</td>
+                        <td>Project funding, grants, initiatives</td>
+                    </tr>
+                    <tr>
+                        <td>Contributor Rewards</td>
+                        <td>25%</td>
+                        <td>Verified regenerative impact</td>
+                    </tr>
+                    <tr>
+                        <td>Core Team</td>
+                        <td>15%</td>
+                        <td>Early builders (4-year vesting)</td>
+                    </tr>
+                    <tr>
+                        <td>Ecosystem Development</td>
+                        <td>10%</td>
+                        <td>Partnerships, integrations, growth</td>
+                    </tr>
+                    <tr>
+                        <td>Reserve Fund</td>
+                        <td>10%</td>
+                        <td>Stability, emergency, insurance</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <strong>Note:</strong> Detailed tokenomics, including total supply and distribution schedules, will be determined through community governance.
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="content-section" id="how-it-works">
+            <h2>How NaloDAO Works</h2>
+            
+            <h3>The Regenerative Loop</h3>
+            <ol>
+                <li><strong>PROPOSE</strong> → Community member submits regenerative project</li>
+                <li><strong>VOTE</strong> → DAO members review and vote on proposal</li>
+                <li><strong>FUND</strong> → Approved projects receive NALO allocation</li>
+                <li><strong>ACT</strong> → Project team executes on-ground work</li>
+                <li><strong>VERIFY</strong> → Evidence submitted (photos, GPS, testimonials)</li>
+                <li><strong>REWARD</strong> → Verified impact triggers token distribution</li>
+                <li><strong>REINVEST</strong> → Portion flows back to commons fund</li>
+            </ol>
+            
+            <h3>Verification System: Proof of Regeneration (PoR)</h3>
+            
+            <h4>Level 1: Self-Reporting</h4>
+            <ul>
+                <li>Photos and videos</li>
+                <li>GPS coordinates</li>
+                <li>Written documentation</li>
+                <li>Community testimonials</li>
+            </ul>
+            
+            <h4>Level 2: Community Validation</h4>
+            <ul>
+                <li>Local node verification</li>
+                <li>Peer review process</li>
+                <li>Living Library confirmation</li>
+            </ul>
+            
+            <h4>Level 3: Technical Verification</h4>
+            <ul>
+                <li>Satellite imagery analysis</li>
+                <li>Sensor data (soil, water, air)</li>
+                <li>Blockchain oracles</li>
+                <li>Third-party audits (for large projects)</li>
+            </ul>
+        </div>
+
+        <!-- Living Libraries -->
+        <div class="content-section" id="living-libraries">
+            <h2>Living Libraries: Grounding Digital in Physical</h2>
+            
+            <h3>What is a Living Library?</h3>
+            <p><strong>A Living Library is a regenerative hub</strong> — a physical space where digital coordination meets on-ground action.</p>
+            
+            <p>Think of it as:</p>
+            <ul>
+                <li>A community garden + makerspace + learning center</li>
+                <li>A node in the global NaloDAO network</li>
+                <li>A place where regeneration is practiced, not just discussed</li>
+            </ul>
+            
+            <h3>Functions of Living Libraries</h3>
+            
+            <h4>Education</h4>
+            <ul>
+                <li>Workshops on permaculture, composting, water harvesting</li>
+                <li>Blockchain and DAO literacy training</li>
+                <li>Skill-sharing and mentorship programs</li>
+            </ul>
+            
+            <h4>Production</h4>
+            <ul>
+                <li>Food forests and gardens</li>
+                <li>Compost systems</li>
+                <li>Seed libraries</li>
+                <li>Tool sharing</li>
+            </ul>
+            
+            <h4>Coordination</h4>
+            <ul>
+                <li>Local DAO governance meetings</li>
+                <li>Project planning and collaboration</li>
+                <li>Community events and ceremonies</li>
+            </ul>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="content-section" id="technology">
+            <h2>Technology Stack</h2>
+            
+            <h3>Blockchain: Stellar</h3>
+            <p><strong>Why Stellar?</strong></p>
+            <ul>
+                <li>⚡ <strong>Fast</strong> — 3-5 second transactions</li>
+                <li>💰 <strong>Low cost</strong> — Fractions of a cent per transaction</li>
+                <li>🌿 <strong>Energy efficient</strong> — Minimal environmental impact</li>
+                <li>🌍 <strong>Built for financial inclusion</strong> — Designed for global access</li>
+                <li>🔒 <strong>Secure and battle-tested</strong> — Proven technology</li>
+            </ul>
+            
+            <h3>Smart Contracts</h3>
+            <p>Automated agreements that execute when conditions are met:</p>
+            <ul>
+                <li>Release funds when milestones verified</li>
+                <li>Distribute rewards based on contribution</li>
+                <li>Enforce governance decisions</li>
+                <li>Manage token economics</li>
+            </ul>
+        </div>
+
+        <!-- Governance -->
+        <div class="content-section" id="governance">
+            <h2>Governance Model</h2>
+            
+            <h3>Decision-Making Process</h3>
+            <ol>
+                <li><strong>Proposal Submission</strong> — Any member can submit with minimum NALO stake</li>
+                <li><strong>Discussion Period</strong> — Community reviews and provides feedback (7-14 days)</li>
+                <li><strong>Voting Period</strong> — Token-weighted voting with quorum requirements (3-7 days)</li>
+                <li><strong>Execution</strong> — Approved proposals automatically funded via smart contracts</li>
+            </ol>
+            
+            <h3>Governance Circles</h3>
+            <ul>
+                <li>🌍 <strong>Land & Ecology</strong> — Project evaluation, verification standards</li>
+                <li>💻 <strong>Technology</strong> — Platform development, security, infrastructure</li>
+                <li>📚 <strong>Education</strong> — Curriculum, workshops, onboarding</li>
+                <li>💰 <strong>Treasury</strong> — Financial management, token economics</li>
+                <li>🤝 <strong>Community</strong> — Culture, conflict resolution, inclusion</li>
+            </ul>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="content-section" id="roadmap">
+            <h2>Roadmap</h2>
+            
+            <h3>Phase 1: Foundation (Q1-Q2 2026) ✅</h3>
+            <ul>
+                <li>✅ Launch whitepaper</li>
+                <li>✅ Deploy NALO token on Stellar</li>
+                <li>✅ Build core team and advisors</li>
+                <li>✅ Establish first Living Libraries</li>
+                <li>✅ Create basic web platform</li>
+            </ul>
+            
+            <h3>Phase 2: Growth (Q3-Q4 2026)</h3>
+            <ul>
+                <li>Launch mobile application</li>
+                <li>Onboard 10+ Living Libraries globally</li>
+                <li>Implement verification oracles</li>
+                <li>Establish governance circles</li>
+                <li>First community funding round</li>
+            </ul>
+            
+            <h3>Phase 3: Scale (2027)</h3>
+            <ul>
+                <li>100+ Living Libraries worldwide</li>
+                <li>Advanced impact tracking (satellite, sensors)</li>
+                <li>Cross-chain integrations</li>
+                <li>Regional bioregional tokens</li>
+                <li>Educational certification programs</li>
+            </ul>
+            
+            <h3>Phase 4: Maturity (2028+)</h3>
+            <ul>
+                <li>1,000+ Living Libraries</li>
+                <li>Full decentralization of governance</li>
+                <li>Integration with local governments</li>
+                <li>Regenerative marketplace launch</li>
+                <li>Global impact measurement framework</li>
+            </ul>
+        </div>
+
+        <!-- How to Participate -->
+        <div class="content-section" id="participate">
+            <h2>How to Participate</h2>
+            
+            <h3>For Land Stewards</h3>
+            <p><strong>You are the foundation of this movement.</strong></p>
+            <ol>
+                <li>Start a Living Library in your bioregion</li>
+                <li>Submit projects for funding</li>
+                <li>Document your work and earn NALO rewards</li>
+                <li>Share knowledge through workshops</li>
+            </ol>
+            
+            <h3>For Technologists</h3>
+            <p><strong>Build the infrastructure for regeneration.</strong></p>
+            <ol>
+                <li>Contribute code to open-source repositories</li>
+                <li>Develop verification tools</li>
+                <li>Improve platform UX</li>
+                <li>Create data visualizations</li>
+            </ol>
+            
+            <h3>For Educators</h3>
+            <p><strong>Spread regenerative literacy.</strong></p>
+            <ol>
+                <li>Create curriculum for DAO education</li>
+                <li>Host workshops at Living Libraries</li>
+                <li>Produce content (videos, guides)</li>
+                <li>Mentor new members</li>
+            </ol>
+            
+            <h3>For Everyone</h3>
+            <p><strong>Every role matters.</strong></p>
+            <ol>
+                <li>Join the community (Discord, Telegram)</li>
+                <li>Set up a wallet and receive NALO</li>
+                <li>Participate in governance</li>
+                <li>Share the vision</li>
+                <li>Start small — compost, plant, learn, connect</li>
+            </ol>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="content-section" id="conclusion">
+            <h2>Conclusion: The Future We're Planting</h2>
+            
+            <h3>A Vision of Regeneration</h3>
+            <p>Imagine a world where:</p>
+            <ul>
+                <li><strong>Caring for land pays your rent</strong></li>
+                <li><strong>Compost bins give you voting power</strong></li>
+                <li><strong>Planting trees earns you currency</strong></li>
+                <li><strong>Communities govern their own resources</strong></li>
+                <li><strong>Ecological wisdom is valued as much as technical skill</strong></li>
+            </ul>
+            
+            <p>This is not fantasy. This is the world NaloDAO is building—one garden, one token, one community at a time.</p>
+            
+            <h3>The Invitation</h3>
+            <p>This whitepaper is not just information. <strong>It is an invitation.</strong></p>
+            
+            <p>To grow a new economy.<br>
+            To steward a new culture.<br>
+            To become part of a decentralized movement of care, coordination, and regeneration.</p>
+            
+            <div class="success-box">
+                <strong>You are not too late. You are right on time.</strong><br><br>
+                The seeds are planted. The network is growing. The future is regenerative.<br><br>
+                <strong>Join us.</strong>
+            </div>
+        </div>
+
+        <!-- Connect Section -->
+        <div class="content-section">
+            <h2>Connect with NaloDAO</h2>
+            <p><strong>Website:</strong> <a href="https://nalodao.org">nalodao.org</a></p>
+            <p><strong>Treasury Dashboard:</strong> <a href="treasury.html">View Treasury</a></p>
+            <p><strong>Discord:</strong> Coming Soon</p>
+            <p><strong>Twitter:</strong> Coming Soon</p>
+            <p><strong>Email:</strong> <a href="mailto:hello@nalodesigns.com">hello@nalodesigns.com</a></p>
+            
+            <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+            
+            <p style="font-size: 0.9rem; color: #666;">
+                <strong>Document Version:</strong> 1.0<br>
+                <strong>Last Updated:</strong> March 27, 2026<br>
+                <strong>License:</strong> Creative Commons BY-SA 4.0
+            </p>
+            
+            <blockquote style="margin-top: 2rem;">
+                "From soil to sovereignty, from compost to currency, from extraction to regeneration—this is the economy we're building together."
+            </blockquote>
+            
+            <p style="text-align: center; font-size: 2rem; margin-top: 2rem;">🌱</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NaloDAO</h3>
+                <p>Building regenerative systems rooted in permaculture ethics and powered by blockchain technology.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
+                    <li><a href="whitepaper.html">Whitepaper</a></li>
+                    <li><a href="index.html#mission">Our Mission</a></li>
+                    <li><a href="https://www.nalodesigns.com" target="_blank" rel="noopener noreferrer">NaloDesigns</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
+                    <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
+                    <li><a href="https://stellar.expert/explorer/public" target="_blank" rel="noopener noreferrer">Stellar Expert</a></li>
+                    <li><a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer">Freighter Wallet</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="mailto:hello@nalodesigns.com">Email</a></li>
+                    <li><a href="#">Discord (Coming Soon)</a></li>
+                    <li><a href="#">Twitter (Coming Soon)</a></li>
+                    <li><a href="#">GitHub (Coming Soon)</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NaloDAO. Designing with nature to regenerate soil, soul, and society.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <!-- Back to Top Script -->
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll to top
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
