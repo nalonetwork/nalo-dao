@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NaloDAO Treasury Dashboard - Real-time treasury management and transparency">
+    <meta name="description" content="NaloDAO - Building regenerative systems rooted in Earth Care, People Care, and Fair Share">
     
     <!-- Security Headers -->
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <title>Treasury Dashboard - NaloDAO</title>
+    <title>NaloDAO - Regenerative Systems on Stellar</title>
     
     <style>
         * {
@@ -63,8 +63,6 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
-            color: var(--white);
         }
 
         .nav-links {
@@ -113,228 +111,68 @@
             color: white;
         }
 
-        /* Dashboard Container */
-        .dashboard {
-            max-width: 1400px;
-            margin: 100px auto 2rem;
-            padding: 0 2rem;
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            color: var(--primary-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .dashboard-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .wallet-address {
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #666;
-            word-break: break-all;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-green);
-        }
-
-        .stat-subtext {
+        /* Security Badge */
+        .security-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(45, 80, 22, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
             font-size: 0.85rem;
-            color: #999;
-            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* Charts Section */
-        .charts-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+        .security-badge::before {
+            content: "🔒";
         }
 
-        .chart-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .chart-card h3 {
-            color: var(--primary-green);
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        /* Transactions Table */
-        .transactions-section {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .transactions-section h3 {
-            color: var(--primary-green);
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .transactions-table th {
-            background: var(--bg-light);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .transactions-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .transactions-table tr:hover {
-            background: var(--bg-light);
-        }
-
-        .tx-hash {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .tx-hash:hover {
-            text-decoration: underline;
-        }
-
-        .tx-amount {
-            font-weight: 600;
-            color: var(--primary-green);
-        }
-
-        .tx-type {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .tx-type.incoming {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .tx-type.outgoing {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Loading State */
-        .loading {
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
+            color: var(--white);
+            padding: 120px 2rem 80px;
             text-align: center;
-            padding: 3rem;
+            margin-top: 60px;
         }
 
-        .spinner {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(0,0,0,0.1);
-            border-top-color: var(--light-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Error State */
-        .error-message {
-            background: #fff3cd;
-            color: #856404;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            border-left: 4px solid #ffc107;
-        }
-
-        /* Connect Prompt */
-        .connect-prompt {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .connect-prompt h2 {
-            color: var(--primary-green);
+        .hero h1 {
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
         }
 
-        .connect-prompt p {
-            color: #666;
-            margin-bottom: 2rem;
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
         }
 
-        .btn-primary {
-            background-color: var(--accent-gold);
-            color: var(--text-dark);
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn {
             padding: 1rem 2rem;
             border: none;
             border-radius: 50px;
@@ -342,71 +180,436 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-gold);
+            color: var(--text-dark);
         }
 
         .btn-primary:hover {
             background-color: #f0c14b;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
-        /* Allocation Chart */
-        .allocation-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: var(--bg-light);
-            border-radius: 8px;
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
         }
 
-        .allocation-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .allocation-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-
-        .allocation-percentage {
-            font-weight: 600;
+        .btn-secondary:hover {
+            background-color: var(--white);
             color: var(--primary-green);
         }
 
-        /* Info Banner */
-        .info-banner {
-            background: #d1ecf1;
-            color: #0c5460;
+        /* Quick Stats Banner */
+        .quick-stats {
+            background: var(--white);
+            padding: 2rem;
+            margin: -3rem auto 4rem;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .quick-stat {
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Mission Section */
+        .mission {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .mission h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 3rem;
+        }
+
+        .ethics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ethic-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .ethic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .ethic-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .ethic-card h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Stellar Integration Section */
+        .stellar-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+
+        .stellar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stellar-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stellar-section .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card h4 {
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 3rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--light-green);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        /* Wallet Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--text-dark);
+        }
+
+        .wallet-info {
+            background: var(--bg-light);
             padding: 1rem;
             border-radius: 10px;
-            margin-bottom: 2rem;
-            border-left: 4px solid #17a2b8;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-info p {
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+
+        .wallet-info strong {
+            color: var(--primary-green);
+        }
+
+        .action-btn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--light-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top-color: var(--light-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .dashboard {
-                margin-top: 80px;
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-
-            .transactions-table {
-                font-size: 0.85rem;
+            .hero p {
+                font-size: 1.1rem;
             }
 
             .nav-links {
                 display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+                margin: -2rem 1rem 2rem;
+            }
+
+            .mission h2,
+            .stellar-section h2,
+            .how-it-works h2,
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .security-badge {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .modal-content {
+                margin: 20% auto;
+                width: 95%;
             }
         }
     </style>
@@ -415,190 +618,216 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="index.html" class="logo">🌱 NaloDAO</a>
+            <div class="logo">
+                🌱 NaloDAO
+            </div>
+            <button class="menu-toggle" aria-label="Toggle menu">☰</button>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="treasury.html" class="active">Treasury</a></li>
-                <li><a href="index.html#mission">Mission</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="treasury.html">Treasury</a></li>
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#stellar">Stellar</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
                 <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Dashboard -->
-    <div class="dashboard">
-        <div class="dashboard-header">
-            <h1>🏦 Treasury Dashboard</h1>
-            <p>Real-time balance from your connected Stellar wallet</p>
-        </div>
+    <!-- Security Badge -->
+    <div class="security-badge">Secured with HTTPS & Multi-Sig</div>
 
-        <!-- Connect Prompt (shown when wallet not connected) -->
-        <div id="connectPrompt" class="connect-prompt">
-            <h2>Connect Your Wallet</h2>
-            <p>Connect your Freighter wallet to view your Stellar account balance, assets, and transaction history.</p>
-            <button onclick="connectWallet()" class="btn-primary">Connect Freighter Wallet</button>
-            <p style="margin-top: 2rem; font-size: 0.9rem; color: #999;">
-                Don't have Freighter? <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold);">Install it here</a>
-            </p>
-        </div>
-
-        <!-- Dashboard Content (shown when wallet connected) -->
-        <div id="dashboardContent" style="display: none;">
-            
-            <!-- Info Banner -->
-            <div class="info-banner">
-                <strong>ℹ️ Connected Wallet:</strong> Displaying balance and transactions from your connected Freighter wallet.
-                <div class="wallet-address" id="connectedAddress">Loading...</div>
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wallet Connection</h3>
+                <span class="close">&times;</span>
             </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-label">Total Value (USD)</div>
-                    <div class="stat-value" id="totalValue">Loading...</div>
-                    <div class="stat-subtext">Estimated value</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-label">XLM Balance</div>
-                    <div class="stat-value" id="xlmBalance">Loading...</div>
-                    <div class="stat-subtext">Stellar Lumens</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">💵</div>
-                    <div class="stat-label">USDC Balance</div>
-                    <div class="stat-value" id="usdcBalance">Loading...</div>
-                    <div class="stat-subtext">USD Coin</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">🪙</div>
-                    <div class="stat-label">NALO Tokens</div>
-                    <div class="stat-value" id="naloBalance">Loading...</div>
-                    <div class="stat-subtext">Governance tokens</div>
-                </div>
+            <div id="walletStatus">
+                <p style="text-align: center; padding: 1rem;">Initializing wallet connection...</p>
             </div>
-
-            <!-- Charts Section -->
-            <div class="charts-section">
-                <!-- Treasury Allocation -->
-                <div class="chart-card">
-                    <h3>📊 Planned Treasury Allocation</h3>
-                    <div id="allocationChart">
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #4a7c2c;"></div>
-                                <span>Operating Reserve</span>
-                            </div>
-                            <div class="allocation-percentage">30%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #d4af37;"></div>
-                                <span>Project Funding</span>
-                            </div>
-                            <div class="allocation-percentage">40%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #8b6f47;"></div>
-                                <span>Emergency Fund</span>
-                            </div>
-                            <div class="allocation-percentage">20%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #2d5016;"></div>
-                                <span>Impact Investment</span>
-                            </div>
-                            <div class="allocation-percentage">10%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Multi-Sig Status -->
-                <div class="chart-card">
-                    <h3>🔒 Account Information</h3>
-                    <div style="padding: 1rem 0;">
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Network</span>
-                            </div>
-                            <div class="allocation-percentage">Testnet</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Account Status</span>
-                            </div>
-                            <div class="allocation-percentage">Active</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Total Transactions</span>
-                            </div>
-                            <div class="allocation-percentage" id="totalTransactions">Loading...</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Auto-Refresh</span>
-                            </div>
-                            <div class="allocation-percentage">Every 30s</div>
-                        </div>
-                    </div>
-                </div>
+            <div id="walletDetails" class="wallet-info" style="display:none;">
+                <p><strong>Connected Address:</strong></p>
+                <p id="publicKey" style="font-size: 0.9rem; color: #666;"></p>
+                <p><strong>Network:</strong> <span id="network">PUBLIC</span></p>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    ⚠️ Never share your private keys. NaloDAO will never ask for them.
+                </p>
+                <a href="treasury.html" class="action-btn" style="background: var(--accent-gold); color: var(--text-dark);">
+                    View Treasury Dashboard →
+                </a>
             </div>
-
-            <!-- Recent Transactions -->
-            <div class="transactions-section">
-                <h3>📜 Recent Transactions</h3>
-                <div id="transactionsLoading" class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading transactions...</p>
-                </div>
-                <div id="transactionsError" class="error-message" style="display: none;"></div>
-                <table class="transactions-table" id="transactionsTable" style="display: none;">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Asset</th>
-                            <th>Transaction Hash</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsBody">
-                        <!-- Transactions will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-
         </div>
     </div>
 
-    <!-- Load Freighter API -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Building Regenerative Systems</h1>
+        <p>A decentralized autonomous organization rooted in Earth Care, People Care, and Fair Share. Powered by Stellar blockchain for transparent, efficient treasury management.</p>
+        <div class="cta-buttons">
+            <a href="treasury.html" class="btn btn-primary">View Treasury</a>
+            <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Quick Stats Banner -->
+    <div class="quick-stats">
+        <div class="quick-stat">
+            <div class="quick-stat-value">$0.00</div>
+            <div class="quick-stat-label">Treasury Value</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">3 of 5</div>
+            <div class="quick-stat-label">Multi-Sig Security</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">0</div>
+            <div class="quick-stat-label">Active Projects</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">0</div>
+            <div class="quick-stat-label">Community Members</div>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <section class="mission" id="mission">
+        <h2>🌍 Our Three Ethics</h2>
+        <div class="ethics-grid">
+            <div class="ethic-card">
+                <div class="ethic-icon">🌍</div>
+                <h3>Earth Care</h3>
+                <p>Protecting and restoring natural ecosystems through regenerative design practices that work with nature, not against it.</p>
+            </div>
+            <div class="ethic-card">
+                <div class="ethic-icon">🤝</div>
+                <h3>People Care</h3>
+                <p>Supporting human wellbeing and building strong communities through collaboration, education, and shared resources.</p>
+            </div>
+            <div class="ethic-card">
+                <div class="ethic-icon">⚖️</div>
+                <h3>Fair Share</h3>
+                <p>Equitable distribution of resources and abundance through transparent governance and gift economy principles.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stellar Integration Section -->
+    <section class="stellar-section" id="stellar">
+        <div class="stellar-content">
+            <h2>⭐ Powered by Stellar Blockchain</h2>
+            <p class="subtitle">Transparent, efficient, and mission-aligned treasury management</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🌿 Energy Efficient</h4>
+                    <p>Minimal environmental impact aligns with our Earth Care values</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 Low Cost</h4>
+                    <p>~$0.00001 per transaction enables true gift economy</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Fast Settlement</h4>
+                    <p>3-5 second transactions for real-time resource allocation</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Multi-Sig Security</h4>
+                    <p>Democratic control with transparent on-chain records</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🪙 NALO Token</h4>
+                    <p>Governance rights and contribution tracking</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌐 Global Access</h4>
+                    <p>Borderless collaboration with instant payments</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <h2>How NaloDAO Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Connect</h3>
+                <p>Join with your Stellar wallet and receive NALO governance tokens</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Contribute</h3>
+                <p>Share your skills, time, or resources with the community</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Govern</h3>
+                <p>Vote on regenerative land projects and resource allocation</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Thrive</h3>
+                <p>Access shared resources, land sites, and educational programs</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="join">
+        <h2>Ready to Build Regenerative Systems?</h2>
+        <p>Join a global network of landowners, designers, and stewards creating abundance through Earth Care, People Care, and Fair Share.</p>
+        <div class="cta-buttons">
+            <a href="treasury.html" class="btn btn-primary">View Treasury Dashboard</a>
+            <a href="https://www.nalodesigns.com" class="btn btn-secondary">Visit NaloDesigns</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NaloDAO</h3>
+                <p>Building regenerative systems rooted in permaculture ethics and powered by blockchain technology.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
+                    <li><a href="#mission">Our Mission</a></li>
+                    <li><a href="#stellar">Stellar Integration</a></li>
+                    <li><a href="https://www.nalodesigns.com">NaloDesigns</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
+                    <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
+                    <li><a href="#">Whitepaper (Coming Soon)</a></li>
+                    <li><a href="treasury.html">Treasury Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="mailto:hello@nalodesigns.com">Email</a></li>
+                    <li><a href="#">Discord (Coming Soon)</a></li>
+                    <li><a href="#">Twitter (Coming Soon)</a></li>
+                    <li><a href="#">GitHub (Coming Soon)</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NaloDAO. Designing with nature to regenerate soil, soul, and society.</p>
+        </div>
+    </footer>
+
+    <!-- Load Freighter API from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
     
-    <!-- Load Stellar SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/11.2.2/stellar-sdk.min.js"></script>
-    
-    <!-- Treasury Dashboard Script -->
-    <script src="js/treasury.js"></script>
-    
-    <!-- Display connected wallet address -->
-    <script>
-        // Update connected address display when wallet connects
-        window.addEventListener('load', () => {
-            const checkAddress = setInterval(() => {
-                const savedKey = sessionStorage.getItem('nalo_wallet_key');
-                if (savedKey) {
-                    document.getElementById('connectedAddress').textContent = savedKey;
-                    clearInterval(checkAddress);
-                }
-            }, 500);
-        });
-    </script>
+    <!-- Load NaloDAO Wallet Manager -->
+    <script src="js/wallet.js"></script>
 </body>
 </html>
