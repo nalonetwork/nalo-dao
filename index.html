@@ -1,923 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NaloDAO - Building regenerative systems rooted in Earth Care, People Care, and Fair Share">
-    
-    <!-- Security Headers -->
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    
-    <title>NaloDAO - Regenerative Systems on Stellar</title>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-green: #2d5016;
-            --light-green: #4a7c2c;
-            --accent-gold: #d4af37;
-            --earth-brown: #8b6f47;
-            --bg-light: #f8f9f5;
-            --text-dark: #2c3e20;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
-            color: var(--white);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-gold);
-        }
-
-        .nav-links a.active {
-            color: var(--accent-gold);
-            border-bottom: 2px solid var(--accent-gold);
-            padding-bottom: 0.25rem;
-        }
-
-        .wallet-btn {
-            background-color: var(--accent-gold);
-            color: var(--text-dark);
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .wallet-btn:hover {
-            background-color: #f0c14b;
-            transform: translateY(-2px);
-        }
-
-        .wallet-connected {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: var(--primary-green);
-            padding: 1rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            z-index: 999;
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-menu ul {
-            list-style: none;
-        }
-
-        .mobile-menu li {
-            margin-bottom: 1rem;
-        }
-
-        .mobile-menu a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1.1rem;
-            display: block;
-            padding: 0.5rem;
-        }
-
-        .mobile-menu .wallet-btn {
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        /* Security Badge */
-        .security-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(45, 80, 22, 0.95);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 999;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .security-badge::before {
-            content: "🔒";
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
-            color: var(--white);
-            padding: 120px 2rem 80px;
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-gold);
-            color: var(--text-dark);
-        }
-
-        .btn-primary:hover {
-            background-color: #f0c14b;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--white);
-            border: 2px solid var(--white);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--white);
-            color: var(--primary-green);
-        }
-
-        /* Quick Stats Banner */
-        .quick-stats {
-            background: var(--white);
-            padding: 2rem;
-            margin: -3rem auto 4rem;
-            max-width: 1200px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .quick-stat {
-            text-align: center;
-        }
-
-        .quick-stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .quick-stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Mission Section */
-        .mission {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .mission h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary-green);
-            margin-bottom: 3rem;
-        }
-
-        .ethics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .ethic-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            text-align: center;
-        }
-
-        .ethic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .ethic-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .ethic-card h3 {
-            color: var(--primary-green);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Stellar Integration Section */
-        .stellar-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: var(--white);
-            padding: 4rem 2rem;
-            margin: 4rem 0;
-        }
-
-        .stellar-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .stellar-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stellar-section .subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .feature-card h4 {
-            color: var(--accent-gold);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary-green);
-            margin-bottom: 3rem;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .step {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: var(--accent-gold);
-            color: var(--text-dark);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1rem;
-        }
-
-        .step h3 {
-            color: var(--primary-green);
-            margin-bottom: 0.5rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: var(--light-green);
-            color: var(--white);
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary-green);
-            color: var(--white);
-            padding: 3rem 2rem 1rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--accent-gold);
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: var(--white);
-            text-decoration: none;
-            opacity: 0.9;
-            transition: opacity 0.3s;
-        }
-
-        .footer-section a:hover {
-            opacity: 1;
-            color: var(--accent-gold);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            opacity: 0.8;
-        }
-
-        <!-- Wallet Modal -->
-<div id="walletModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Wallet Connection</h3>
-            <span class="close">&times;</span>
-        </div>
-        <div id="walletStatus">
-            <p style="text-align: center; padding: 1rem;">Initializing wallet connection...</p>
-        </div>
-        <div id="walletDetails" class="wallet-info" style="display:none;">
-            <p><strong>Connected Address:</strong></p>
-            <p id="publicKey" style="font-size: 0.9rem; color: #666; word-break: break-all;"></p>
-            <p style="margin-top: 1rem;"><strong>Network:</strong> <span id="network">PUBLIC</span></p>
-            <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
-                ⚠️ Never share your private keys. NaloDAO will never ask for them.
-            </p>
-            <a href="treasury.html" class="action-btn" style="background: var(--accent-gold); color: var(--text-dark); margin-top: 1rem;">
-                View Treasury Dashboard →
-            </a>
-            <button onclick="disconnectWallet()" class="action-btn" style="background: #dc3545; margin-top: 0.5rem;">
-                Disconnect Wallet
-            </button>
-        </div>
-    </div>
-</div>
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,0.1);
-            border-top-color: var(--light-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .quick-stats {
-                grid-template-columns: 1fr;
-                margin: -2rem 1rem 2rem;
-                padding: 1.5rem;
-            }
-
-            .quick-stat-value {
-                font-size: 1.5rem;
-            }
-
-            .ethics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                margin: 5% auto;
-                width: 95%;
-                max-width: 95%;
-                padding: 1.5rem;
-            }
-
-            .wallet-info {
-                font-size: 0.9rem;
-            }
-
-            .wallet-btn,
-            .btn,
-            .action-btn {
-                min-height: 48px;
-                font-size: 1rem;
-            }
-
-            .mission h2,
-            .stellar-section h2,
-            .how-it-works h2,
-            .cta-section h2 {
-                font-size: 2rem;
-            }
-
-            .security-badge {
-                bottom: 10px;
-                right: 10px;
-                font-size: 0.75rem;
-                padding: 0.4rem 0.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 1.4rem;
-            }
-
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .mission h2,
-            .stellar-section h2,
-            .how-it-works h2,
-            .cta-section h2 {
-                font-size: 1.5rem;
-            }
-
-            .ethic-card,
-            .feature-card,
-            .step {
-                padding: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">
-                🌱 NaloDAO
-            </div>
-            <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-            <ul class="nav-links">
-                <li><a href="treasury.html">Treasury</a></li>
-                <li><a href="whitepaper.html">Whitepaper</a></li>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="#mission">Mission</a></li>
-                <li><a href="#stellar">Stellar</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Security Badge -->
-    <div class="security-badge">Secured with HTTPS & Multi-Sig</div>
-
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Wallet Connection</h3>
-                <span class="close">&times;</span>
-            </div>
-            <div id="walletStatus">
-                <p style="text-align: center; padding: 1rem;">Initializing wallet connection...</p>
-            </div>
-            <div id="walletDetails" class="wallet-info" style="display:none;">
-                <p><strong>Connected Address:</strong></p>
-                <p id="publicKey" style="font-size: 0.9rem; color: #666;"></p>
-                <p><strong>Network:</strong> <span id="network">PUBLIC</span></p>
-                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
-                    ⚠️ Never share your private keys. NaloDAO will never ask for them.
-                </p>
-                <a href="treasury.html" class="action-btn" style="background: var(--accent-gold); color: var(--text-dark);">
-                    View Treasury Dashboard →
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Building Regenerative Systems</h1>
-        <p>A decentralized autonomous organization rooted in Earth Care, People Care, and Fair Share. Powered by Stellar blockchain for transparent, efficient treasury management.</p>
-        <div class="cta-buttons">
-            <a href="treasury.html" class="btn btn-primary">View Treasury</a>
-            <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
-        </div>
-    </section>
-
-    <!-- Quick Stats Banner -->
-    <div class="quick-stats">
-        <div class="quick-stat">
-            <div class="quick-stat-value">$0.00</div>
-            <div class="quick-stat-label">Treasury Value</div>
-        </div>
-        <div class="quick-stat">
-            <div class="quick-stat-value">3 of 5</div>
-            <div class="quick-stat-label">Multi-Sig Security</div>
-        </div>
-        <div class="quick-stat">
-            <div class="quick-stat-value">0</div>
-            <div class="quick-stat-label">Active Projects</div>
-        </div>
-        <div class="quick-stat">
-            <div class="quick-stat-value">0</div>
-            <div class="quick-stat-label">Community Members</div>
-        </div>
-    </div>
-
-    <!-- Mission Section -->
-    <section class="mission" id="mission">
-        <h2>🌍 Our Three Ethics</h2>
-        <div class="ethics-grid">
-            <div class="ethic-card">
-                <div class="ethic-icon">🌍</div>
-                <h3>Earth Care</h3>
-                <p>Protecting and restoring natural ecosystems through regenerative design practices that work with nature, not against it.</p>
-            </div>
-            <div class="ethic-card">
-                <div class="ethic-icon">🤝</div>
-                <h3>People Care</h3>
-                <p>Supporting human wellbeing and building strong communities through collaboration, education, and shared resources.</p>
-            </div>
-            <div class="ethic-card">
-                <div class="ethic-icon">⚖️</div>
-                <h3>Fair Share</h3>
-                <p>Equitable distribution of resources and abundance through transparent governance and gift economy principles.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stellar Integration Section -->
-    <section class="stellar-section" id="stellar">
-        <div class="stellar-content">
-            <h2>⭐ Powered by Stellar Blockchain</h2>
-            <p class="subtitle">Transparent, efficient, and mission-aligned treasury management</p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h4>🌿 Energy Efficient</h4>
-                    <p>Minimal environmental impact aligns with our Earth Care values</p>
-                </div>
-                <div class="feature-card">
-                    <h4>💰 Low Cost</h4>
-                    <p>~$0.00001 per transaction enables true gift economy</p>
-                </div>
-                <div class="feature-card">
-                    <h4>⚡ Fast Settlement</h4>
-                    <p>3-5 second transactions for real-time resource allocation</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🔒 Multi-Sig Security</h4>
-                    <p>Democratic control with transparent on-chain records</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🪙 NALO Token</h4>
-                    <p>Governance rights and contribution tracking</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🌐 Global Access</h4>
-                    <p>Borderless collaboration with instant payments</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <h2>How NaloDAO Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Connect</h3>
-                <p>Join with your Stellar wallet and receive NALO governance tokens</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Contribute</h3>
-                <p>Share your skills, time, or resources with the community</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Govern</h3>
-                <p>Vote on regenerative land projects and resource allocation</p>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <h3>Thrive</h3>
-                <p>Access shared resources, land sites, and educational programs</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section" id="join">
-        <h2>Ready to Build Regenerative Systems?</h2>
-        <p>Join a global network of landowners, designers, and stewards creating abundance through Earth Care, People Care, and Fair Share.</p>
-        <div class="cta-buttons">
-            <a href="treasury.html" class="btn btn-primary">View Treasury Dashboard</a>
-            <a href="https://www.nalodesigns.com" class="btn btn-secondary">Visit NaloDesigns</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>NaloDAO</h3>
-                <p>Building regenerative systems rooted in permaculture ethics and powered by blockchain technology.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="treasury.html">Treasury Dashboard</a></li>
-                    <li><a href="whitepaper.html">Whitepaper</a></li>
-                    <li><a href="#mission">Our Mission</a></li>
-                    <li><a href="#stellar">Stellar Integration</a></li>
-                    <li><a href="https://www.nalodesigns.com">NaloDesigns</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Resources</h3>
-                <ul>
-                    <li><a href="https://stellar.org" target="_blank" rel="noopener noreferrer">Stellar Network</a></li>
-                    <li><a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer">Developer Docs</a></li>
-                    <li><a href="whitepaper.html">Whitepaper</a></li>
-                    <li><a href="treasury.html">Treasury Dashboard</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <ul>
-                    <li><a href="mailto:hello@nalodesigns.com">Email</a></li>
-                    <li><a href="#">Discord (Coming Soon)</a></li>
-                    <li><a href="#">Twitter (Coming Soon)</a></li>
-                    <li><a href="#">GitHub (Coming Soon)</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 NaloDAO. Designing with nature to regenerate soil, soul, and society.</p>
-        </div>
-    </footer>
-
-    <!-- Load Freighter API from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
-    
-    <!-- Load NaloDAO Wallet Manager -->
-    <script src="js/wallet.js"></script>
-
-    <!-- Mobile Menu Toggle Script -->
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                let mobileMenu = document.querySelector('.mobile-menu');
-                
-                if (!mobileMenu) {
-                    mobileMenu = document.createElement('div');
-                    mobileMenu.className = 'mobile-menu';
-                    mobileMenu.innerHTML = navLinks.innerHTML;
-                    document.body.appendChild(mobileMenu);
-                }
-                
-                mobileMenu.classList.toggle('active');
-                
-                if (mobileMenu.classList.contains('active')) {
-                    menuToggle.textContent = '✕';
-                } else {
-                    menuToggle.textContent = '☰';
-                }
-            });
-        }
-        
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (mobileMenu && mobileMenu.classList.contains('active')) {
-                if (!mobileMenu.contains(event.target) && event.target !== menuToggle) {
-                    mobileMenu.classList.remove('active');
-                    if (menuToggle) {
-                        menuToggle.textContent = '☰';
-                    }
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+/* Mobile Menu Toggle */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--primary-green);
+    padding: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 999;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+}
+
+.mobile-menu li {
+    margin-bottom: 1rem;
+}
+
+.mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: block;
+    padding: 0.5rem;
+}
+
+.mobile-menu .wallet-btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Improved Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .quick-stats {
+        grid-template-columns: 1fr;
+        margin: -2rem 1rem 2rem;
+        padding: 1.5rem;
+    }
+
+    .quick-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .ethics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modal improvements for mobile */
+    .modal-content {
+        margin: 5% auto;
+        width: 95%;
+        max-width: 95%;
+        padding: 1.5rem;
+    }
+
+    .wallet-info {
+        font-size: 0.9rem;
+    }
+
+    /* Touch-friendly buttons */
+    .wallet-btn,
+    .btn,
+    .action-btn {
+        min-height: 48px;
+        font-size: 1rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .mission h2,
+    .stellar-section h2,
+    .how-it-works h2,
+    .cta-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .ethic-card,
+    .feature-card,
+    .step {
+        padding: 1.5rem;
+    }
+}
