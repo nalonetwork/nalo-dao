@@ -36,6 +36,9 @@ function initTreasuryDashboard() {
     const isConnected = sessionStorage.getItem('nalo_wallet_connected') === 'true';
     const savedKey = sessionStorage.getItem('nalo_wallet_key');
     
+    console.log('Wallet connected:', isConnected);
+    console.log('Saved key:', savedKey);
+    
     if (isConnected && savedKey) {
         console.log('Wallet connected, loading dashboard...');
         userWalletData.publicKey = savedKey;
@@ -141,37 +144,44 @@ function updateUserWalletDisplay() {
         userWalletSection.className = 'assets-section';
         userWalletSection.style.marginBottom = '2rem';
         
-        // Insert before treasury assets section
-        const assetsSection = document.querySelector('.assets-section');
-        if (assetsSection && assetsSection.parentNode) {
-            assetsSection.parentNode.insertBefore(userWalletSection, assetsSection);
+        // Insert at the beginning of dashboard content
+        const dashboardContent = document.getElementById('dashboardContent');
+        const infoBanner = dashboardContent.querySelector('.info-banner');
+        
+        if (infoBanner && infoBanner.nextSibling) {
+            dashboardContent.insertBefore(userWalletSection, infoBanner.nextSibling);
+        } else if (dashboardContent.firstChild) {
+            dashboardContent.insertBefore(userWalletSection, dashboardContent.firstChild);
         }
     }
     
     // Build HTML
     let html = `
         <div class="section-header">
-            <h2>💼 Your Wallet</h2>
+            <h2>💼 Your Connected Wallet</h2>
         </div>
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 10px; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Connected Wallet</p>
+                <div style="flex: 1; min-width: 200px;">
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Wallet Address</p>
                     <p style="font-family: monospace; font-size: 0.85rem; word-break: break-all;">${userWalletData.publicKey}</p>
                 </div>
                 <div style="text-align: right;">
-                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Balance</p>
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Your Balance</p>
                     <p style="font-size: 2rem; font-weight: bold;">${xlmAmount.toFixed(2)} XLM</p>
                     <p style="font-size: 0.9rem; opacity: 0.9;">≈ $${(xlmAmount * 0.12).toFixed(2)} USD</p>
                 </div>
             </div>
-            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <a href="${TREASURY_CONFIG.stellarExpertUrl}/account/${userWalletData.publicKey}" 
                    target="_blank" 
                    rel="noopener noreferrer"
                    style="color: white; text-decoration: none; opacity: 0.9; font-size: 0.9rem;">
                     View on Stellar Expert →
                 </a>
+                <button onclick="disconnectWallet()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Disconnect
+                </button>
             </div>
         </div>
     `;
@@ -429,21 +439,5 @@ if (document.readyState === 'loading') {
 } else {
     initTreasuryDashboard();
 }
-
-// Listen for wallet connection events from other tabs/windows
-window.addEventListener('storage', function(e) {
-    if (e.key === 'nalo_wallet_connected') {
-        if (e.newValue === 'true') {
-            const savedKey = sessionStorage.getItem('nalo_wallet_key');
-            if (savedKey) {
-                userWalletData.publicKey = savedKey;
-                showDashboard();
-                loadAllData();
-            }
-        } else {
-            showConnectPrompt();
-        }
-    }
-});
 
 console.log('=== Treasury Manager Script Loaded ===');
