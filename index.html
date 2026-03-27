@@ -704,191 +704,256 @@
     </footer>
 
     <!-- Secure Wallet Connection Script -->
-    <script>
-        // Secure Wallet Manager
-        class SecureWalletManager {
-            constructor() {
-                this.connectedPublicKey = null;
-                this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
-                this.lastActivity = Date.now();
-                this.modal = document.getElementById('walletModal');
-                this.walletBtn = document.getElementById('walletBtn');
-                this.closeBtn = document.querySelector('.close');
-                
-                this.init();
-            }
+<script>
+    // Secure Wallet Manager with Extension Detection Fix
+    class SecureWalletManager {
+        constructor() {
+            this.connectedPublicKey = null;
+            this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
+            this.lastActivity = Date.now();
+            this.modal = document.getElementById('walletModal');
+            this.walletBtn = document.getElementById('walletBtn');
+            this.closeBtn = document.querySelector('.close');
+            this.maxRetries = 5;
+            this.retryDelay = 500; // ms
             
-            init() {
-                // Modal controls
-                this.walletBtn.onclick = () => this.openModal();
-                this.closeBtn.onclick = () => this.closeModal();
-                window.onclick = (event) => {
-                    if (event.target === this.modal) {
-                        this.closeModal();
-                    }
-                };
-                
-                // Check for existing connection
-                this.checkConnection();
-                
-                // Activity monitoring
-                this.startSessionMonitoring();
-            }
-            
-            openModal() {
-                this.modal.style.display = 'block';
-                if (!this.connectedPublicKey) {
-                    this.connect();
+            this.init();
+        }
+        
+        init() {
+            // Modal controls
+            this.walletBtn.onclick = () => this.openModal();
+            this.closeBtn.onclick = () => this.closeModal();
+            window.onclick = (event) => {
+                if (event.target === this.modal) {
+                    this.closeModal();
                 }
-            }
+            };
             
-            closeModal() {
-                this.modal.style.display = 'none';
-            }
+            // Check for existing connection
+            this.checkConnection();
             
-            async connect() {
-                try {
-                    // Check if Freighter is installed
-                    if (typeof window.freighterApi === 'undefined') {
-                        document.getElementById('walletStatus').innerHTML = `
-                            <p style="color: #d32f2f;">⚠️ Freighter wallet not detected.</p>
-                            <p>Please install <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold);">Freighter Wallet</a> extension.</p>
-                        `;
-                        return;
-                    }
-                    
-                    // Check if connected
-                    const isConnected = await window.freighterApi.isConnected();
-                    if (!isConnected) {
-                        document.getElementById('walletStatus').innerHTML = `
-                            <p style="color: #ff9800;">Requesting wallet connection...</p>
-                            <p style="font-size: 0.9rem; color: #666;">Please approve the connection in your Freighter wallet.</p>
-                        `;
-                    }
-                    
-                    // Get public key
-                    const publicKey = await window.freighterApi.getPublicKey();
-                    
-                    // Validate public key format
-                    if (!this.isValidPublicKey(publicKey)) {
-                        throw new Error('Invalid public key format received');
-                    }
-                    
-                    // Store connection
-                    this.connectedPublicKey = publicKey;
-                    this.lastActivity = Date.now();
-                    
-                    // Update UI
-                    this.updateUI(publicKey);
-                    
-                    // Store in session (not localStorage for security)
-                    sessionStorage.setItem('walletConnected', 'true');
-                    
-                } catch (error) {
-                    console.error('Wallet connection failed:', error);
-                    document.getElementById('walletStatus').innerHTML = `
-                        <p style="color: #d32f2f;">❌ Connection failed: ${this.sanitizeError(error.message)}</p>
-                        <p style="font-size: 0.9rem;">Please try again or check your wallet extension.</p>
-                    `;
-                }
-            }
-            
-            isValidPublicKey(key) {
-                // Stellar public keys start with G and are 56 characters
-                return /^G[A-Z2-7]{55}$/.test(key);
-            }
-            
-            sanitizeError(message) {
-                // Prevent XSS in error messages
-                const div = document.createElement('div');
-                div.textContent = message;
-                return div.innerHTML;
-            }
-            
-            updateUI(publicKey) {
-                // Update button
-                this.walletBtn.textContent = 'Connected';
-                this.walletBtn.classList.add('wallet-connected');
-                
-                // Show wallet details
-                document.getElementById('walletStatus').style.display = 'none';
-                document.getElementById('walletDetails').style.display = 'block';
-                document.getElementById('publicKey').textContent = publicKey;
-                
-                // Add disconnect option
-                if (!document.getElementById('disconnectBtn')) {
-                    const disconnectBtn = document.createElement('button');
-                    disconnectBtn.id = 'disconnectBtn';
-                    disconnectBtn.textContent = 'Disconnect';
-                    disconnectBtn.className = 'btn btn-secondary';
-                    disconnectBtn.style.marginTop = '1rem';
-                    disconnectBtn.style.width = '100%';
-                    disconnectBtn.onclick = () => this.disconnect();
-                    document.getElementById('walletDetails').appendChild(disconnectBtn);
-                }
-            }
-            
-            disconnect() {
-                this.connectedPublicKey = null;
-                sessionStorage.removeItem('walletConnected');
-                
-                // Reset UI
-                this.walletBtn.textContent = 'Connect Wallet';
-                this.walletBtn.classList.remove('wallet-connected');
-                document.getElementById('walletStatus').style.display = 'block';
-                document.getElementById('walletDetails').style.display = 'none';
-                document.getElementById('walletStatus').innerHTML = `
-                    <p>Wallet disconnected successfully.</p>
-                `;
-                
-                this.closeModal();
-            }
-            
-            checkConnection() {
-                // Check if previously connected in this session
-                if (sessionStorage.getItem('walletConnected') === 'true') {
-                    this.connect();
-                }
-            }
-            
-            startSessionMonitoring() {
-                // Auto-disconnect after inactivity
-                setInterval(() => {
-                    if (this.connectedPublicKey && 
-                        Date.now() - this.lastActivity > this.sessionTimeout) {
-                        console.log('Session timeout - disconnecting wallet');
-                        this.disconnect();
-                    }
-                }, 60000); // Check every minute
-                
-                // Update activity on user interaction
-                ['click', 'keypress', 'scroll', 'mousemove'].forEach(event => {
-                    document.addEventListener(event, () => {
-                        if (this.connectedPublicKey) {
-                            this.lastActivity = Date.now();
-                        }
-                    }, { passive: true });
-                });
-            }
-            
-            getPublicKey() {
-                if (!this.connectedPublicKey) {
-                    throw new Error('Wallet not connected');
-                }
-                return this.connectedPublicKey;
+            // Activity monitoring
+            this.startSessionMonitoring();
+        }
+        
+        openModal() {
+            this.modal.style.display = 'block';
+            if (!this.connectedPublicKey) {
+                this.connect();
             }
         }
         
-        // Initialize wallet manager when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            window.walletManager = new SecureWalletManager();
-        });
+        closeModal() {
+            this.modal.style.display = 'none';
+        }
         
-        // Security: Clear sensitive data on page unload
-        window.addEventListener('beforeunload', () => {
-            // Don't persist wallet connection across page reloads for security
-            // User must reconnect each session
+        // NEW: Wait for Freighter to load with retries
+        async waitForFreighter(retries = 0) {
+            if (typeof window.freighterApi !== 'undefined') {
+                return true;
+            }
+            
+            if (retries >= this.maxRetries) {
+                return false;
+            }
+            
+            // Wait and retry
+            await new Promise(resolve => setTimeout(resolve, this.retryDelay));
+            return this.waitForFreighter(retries + 1);
+        }
+        
+        async connect() {
+            try {
+                // Show loading state
+                document.getElementById('walletStatus').innerHTML = `
+                    <p style="color: #666;">🔄 Detecting Freighter wallet...</p>
+                    <p style="font-size: 0.9rem;">Please wait a moment...</p>
+                `;
+                
+                // Wait for Freighter to load (with retries)
+                const freighterLoaded = await this.waitForFreighter();
+                
+                if (!freighterLoaded) {
+                    document.getElementById('walletStatus').innerHTML = `
+                        <p style="color: #d32f2f;">⚠️ Freighter wallet not detected.</p>
+                        <p style="margin: 1rem 0;">Please make sure:</p>
+                        <ul style="text-align: left; margin-left: 2rem; line-height: 1.8;">
+                            <li>Freighter extension is installed</li>
+                            <li>Extension is enabled in your browser</li>
+                            <li>You've refreshed this page after installing</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">
+                            <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" 
+                               style="color: var(--accent-gold); font-weight: 600;">
+                               Install Freighter Wallet →
+                            </a>
+                        </p>
+                        <button onclick="location.reload()" 
+                                style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--light-green); 
+                                       color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Refresh Page
+                        </button>
+                    `;
+                    return;
+                }
+                
+                // Check if connected
+                const isConnected = await window.freighterApi.isConnected();
+                if (!isConnected) {
+                    document.getElementById('walletStatus').innerHTML = `
+                        <p style="color: #ff9800;">🔐 Requesting wallet connection...</p>
+                        <p style="font-size: 0.9rem; color: #666;">Please approve the connection in your Freighter wallet popup.</p>
+                    `;
+                }
+                
+                // Get public key
+                const publicKey = await window.freighterApi.getPublicKey();
+                
+                // Validate public key format
+                if (!this.isValidPublicKey(publicKey)) {
+                    throw new Error('Invalid public key format received');
+                }
+                
+                // Store connection
+                this.connectedPublicKey = publicKey;
+                this.lastActivity = Date.now();
+                
+                // Update UI
+                this.updateUI(publicKey);
+                
+                // Store in session (not localStorage for security)
+                sessionStorage.setItem('walletConnected', 'true');
+                
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                
+                // Handle specific error cases
+                let errorMessage = '';
+                if (error.message.includes('User declined')) {
+                    errorMessage = '❌ Connection declined. Please approve the connection request in Freighter.';
+                } else if (error.message.includes('timeout')) {
+                    errorMessage = '⏱️ Connection timeout. Please try again.';
+                } else {
+                    errorMessage = `❌ Connection failed: ${this.sanitizeError(error.message)}`;
+                }
+                
+                document.getElementById('walletStatus').innerHTML = `
+                    <p style="color: #d32f2f;">${errorMessage}</p>
+                    <button onclick="window.walletManager.connect()" 
+                            style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--light-green); 
+                                   color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Try Again
+                    </button>
+                `;
+            }
+        }
+        
+        isValidPublicKey(key) {
+            // Stellar public keys start with G and are 56 characters
+            return /^G[A-Z2-7]{55}$/.test(key);
+        }
+        
+        sanitizeError(message) {
+            // Prevent XSS in error messages
+            const div = document.createElement('div');
+            div.textContent = message;
+            return div.innerHTML;
+        }
+        
+        updateUI(publicKey) {
+            // Update button
+            this.walletBtn.textContent = '✓ Connected';
+            this.walletBtn.classList.add('wallet-connected');
+            
+            // Show wallet details
+            document.getElementById('walletStatus').style.display = 'none';
+            document.getElementById('walletDetails').style.display = 'block';
+            document.getElementById('publicKey').textContent = publicKey;
+            
+            // Add disconnect option
+            if (!document.getElementById('disconnectBtn')) {
+                const disconnectBtn = document.createElement('button');
+                disconnectBtn.id = 'disconnectBtn';
+                disconnectBtn.textContent = 'Disconnect';
+                disconnectBtn.className = 'btn btn-secondary';
+                disconnectBtn.style.marginTop = '1rem';
+                disconnectBtn.style.width = '100%';
+                disconnectBtn.onclick = () => this.disconnect();
+                document.getElementById('walletDetails').appendChild(disconnectBtn);
+            }
+        }
+        
+        disconnect() {
+            this.connectedPublicKey = null;
+            sessionStorage.removeItem('walletConnected');
+            
+            // Reset UI
+            this.walletBtn.textContent = 'Connect Wallet';
+            this.walletBtn.classList.remove('wallet-connected');
+            document.getElementById('walletStatus').style.display = 'block';
+            document.getElementById('walletDetails').style.display = 'none';
+            document.getElementById('walletStatus').innerHTML = `
+                <p>Wallet disconnected successfully.</p>
+            `;
+            
+            this.closeModal();
+        }
+        
+        checkConnection() {
+            // Check if previously connected in this session
+            if (sessionStorage.getItem('walletConnected') === 'true') {
+                // Small delay to ensure extension is loaded
+                setTimeout(() => this.connect(), 1000);
+            }
+        }
+        
+        startSessionMonitoring() {
+            // Auto-disconnect after inactivity
+            setInterval(() => {
+                if (this.connectedPublicKey && 
+                    Date.now() - this.lastActivity > this.sessionTimeout) {
+                    console.log('Session timeout - disconnecting wallet');
+                    this.disconnect();
+                }
+            }, 60000); // Check every minute
+            
+            // Update activity on user interaction
+            ['click', 'keypress', 'scroll', 'mousemove'].forEach(event => {
+                document.addEventListener(event, () => {
+                    if (this.connectedPublicKey) {
+                        this.lastActivity = Date.now();
+                    }
+                }, { passive: true });
+            });
+        }
+        
+        getPublicKey() {
+            if (!this.connectedPublicKey) {
+                throw new Error('Wallet not connected');
+            }
+            return this.connectedPublicKey;
+        }
+    }
+    
+    // Initialize wallet manager when page loads
+    // Wait for both DOM and extensions to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.walletManager = new SecureWalletManager();
+            }, 500); // Small delay to ensure extensions are loaded
         });
-    </script>
+    } else {
+        setTimeout(() => {
+            window.walletManager = new SecureWalletManager();
+        }, 500);
+    }
+    
+    // Security: Clear sensitive data on page unload
+    window.addEventListener('beforeunload', () => {
+        // Don't persist wallet connection across page reloads for security
+    });
+</script>
 </body>
 </html>
