@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NaloDAO Treasury Dashboard - Real-time treasury management and transparency">
+    <meta name="description" content="NaloDAO Treasury Dashboard - Complete account balance and asset overview">
     
     <!-- Security Headers -->
     <meta http-equiv="X-Frame-Options" content="DENY">
@@ -49,7 +49,7 @@
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -85,6 +85,12 @@
             color: var(--accent-gold);
         }
 
+        .nav-links a.active {
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 0.25rem;
+        }
+
         .wallet-btn {
             background-color: var(--accent-gold);
             color: var(--text-dark);
@@ -116,7 +122,7 @@
 
         .dashboard-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .dashboard-header h1 {
@@ -130,10 +136,21 @@
             font-size: 1.1rem;
         }
 
+        .wallet-address {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            word-break: break-all;
+        }
+
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -163,7 +180,7 @@
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--primary-green);
         }
@@ -174,35 +191,74 @@
             margin-top: 0.5rem;
         }
 
-        /* Charts Section */
-        .charts-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .chart-card {
+        /* Assets Section */
+        .assets-section {
             background: var(--white);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
         }
 
-        .chart-card h3 {
+        .assets-section h3 {
             color: var(--primary-green);
             margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .chart-placeholder {
-            height: 300px;
-            background: var(--bg-light);
-            border-radius: 10px;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #999;
+            gap: 0.5rem;
+        }
+
+        .assets-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .assets-table th {
+            background: var(--bg-light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+            border-bottom: 2px solid #ddd;
+        }
+
+        .assets-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .assets-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .asset-balance {
+            font-weight: 600;
+            color: var(--primary-green);
+            font-family: monospace;
+        }
+
+        .asset-value {
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .asset-type-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .issuer-link {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .issuer-link:hover {
+            text-decoration: underline;
         }
 
         /* Transactions Table */
@@ -245,7 +301,12 @@
         .tx-hash {
             font-family: monospace;
             font-size: 0.85rem;
-            color: #666;
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .tx-hash:hover {
+            text-decoration: underline;
         }
 
         .tx-amount {
@@ -293,11 +354,12 @@
 
         /* Error State */
         .error-message {
-            background: #f8d7da;
-            color: #721c24;
+            background: #fff3cd;
+            color: #856404;
             padding: 1rem;
             border-radius: 10px;
             margin: 1rem 0;
+            border-left: 4px solid #ffc107;
         }
 
         /* Connect Prompt */
@@ -336,32 +398,14 @@
             transform: translateY(-2px);
         }
 
-        /* Allocation Chart */
-        .allocation-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: var(--bg-light);
-            border-radius: 8px;
-        }
-
-        .allocation-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .allocation-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-
-        .allocation-percentage {
-            font-weight: 600;
-            color: var(--primary-green);
+        /* Info Banner */
+        .info-banner {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #17a2b8;
         }
 
         /* Responsive */
@@ -374,11 +418,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-
-            .transactions-table {
+            .assets-table, .transactions-table {
                 font-size: 0.85rem;
             }
 
@@ -395,7 +435,7 @@
             <a href="index.html" class="logo">🌱 NaloDAO</a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="treasury.html">Treasury</a></li>
+                <li><a href="treasury.html" class="active">Treasury</a></li>
                 <li><a href="index.html#mission">Mission</a></li>
                 <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
             </ul>
@@ -405,27 +445,36 @@
     <!-- Dashboard -->
     <div class="dashboard">
         <div class="dashboard-header">
-            <h1>🏦 Treasury Dashboard</h1>
-            <p>Real-time transparency into NaloDAO's regenerative funding</p>
+            <h1>💼 Account Balance Dashboard</h1>
+            <p>Complete overview of your Stellar wallet assets</p>
         </div>
 
         <!-- Connect Prompt (shown when wallet not connected) -->
         <div id="connectPrompt" class="connect-prompt">
             <h2>Connect Your Wallet</h2>
-            <p>Connect your Stellar wallet to view detailed treasury information and your NALO token balance.</p>
-            <button onclick="connectWallet()" class="btn-primary">Connect Wallet</button>
+            <p>Connect your Freighter wallet to view your complete account balance, all assets, and transaction history.</p>
+            <button onclick="connectWallet()" class="btn-primary">Connect Freighter Wallet</button>
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: #999;">
+                Don't have Freighter? <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold);">Install it here</a>
+            </p>
         </div>
 
         <!-- Dashboard Content (shown when wallet connected) -->
         <div id="dashboardContent" style="display: none;">
             
+            <!-- Info Banner -->
+            <div class="info-banner">
+                <strong>ℹ️ Connected Wallet:</strong> Displaying all assets and balances from your connected Freighter wallet. Data refreshes automatically every 30 seconds.
+                <div class="wallet-address" id="connectedAddress">Loading...</div>
+            </div>
+
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
-                    <div class="stat-label">Total Treasury Value</div>
+                    <div class="stat-label">Total Value (USD)</div>
                     <div class="stat-value" id="totalValue">Loading...</div>
-                    <div class="stat-subtext">Across all assets</div>
+                    <div class="stat-subtext">Estimated portfolio value</div>
                 </div>
 
                 <div class="stat-card">
@@ -444,79 +493,48 @@
 
                 <div class="stat-card">
                     <div class="stat-icon">🪙</div>
-                    <div class="stat-label">Your NALO Tokens</div>
+                    <div class="stat-label">NALO Tokens</div>
                     <div class="stat-value" id="naloBalance">Loading...</div>
                     <div class="stat-subtext">Governance tokens</div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">Total Assets</div>
+                    <div class="stat-value" id="totalAssets">Loading...</div>
+                    <div class="stat-subtext">Different asset types</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📜</div>
+                    <div class="stat-label">Transactions</div>
+                    <div class="stat-value" id="totalTransactions">Loading...</div>
+                    <div class="stat-subtext">Recent activity</div>
+                </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="charts-section">
-                <!-- Treasury Allocation -->
-                <div class="chart-card">
-                    <h3>📊 Treasury Allocation</h3>
-                    <div id="allocationChart">
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #4a7c2c;"></div>
-                                <span>Operating Reserve</span>
-                            </div>
-                            <div class="allocation-percentage">30%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #d4af37;"></div>
-                                <span>Project Funding</span>
-                            </div>
-                            <div class="allocation-percentage">40%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #8b6f47;"></div>
-                                <span>Emergency Fund</span>
-                            </div>
-                            <div class="allocation-percentage">20%</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <div class="allocation-color" style="background: #2d5016;"></div>
-                                <span>Impact Investment</span>
-                            </div>
-                            <div class="allocation-percentage">10%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Multi-Sig Status -->
-                <div class="chart-card">
-                    <h3>🔒 Multi-Sig Security</h3>
-                    <div style="padding: 1rem 0;">
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Required Signatures</span>
-                            </div>
-                            <div class="allocation-percentage">3 of 5</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Active Signers</span>
-                            </div>
-                            <div class="allocation-percentage">5</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Pending Proposals</span>
-                            </div>
-                            <div class="allocation-percentage" id="pendingProposals">0</div>
-                        </div>
-                        <div class="allocation-item">
-                            <div class="allocation-label">
-                                <span>Total Transactions</span>
-                            </div>
-                            <div class="allocation-percentage" id="totalTransactions">Loading...</div>
-                        </div>
-                    </div>
-                </div>
+            <!-- All Assets Section -->
+            <div class="assets-section" id="assetsSection" style="display: none;">
+                <h3>🔷 All Assets in Your Wallet</h3>
+                <table class="assets-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Balance</th>
+                            <th>Value (USD)</th>
+                            <th>Type</th>
+                            <th>Issuer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assetsTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem;">
+                                <div class="spinner"></div>
+                                <p>Loading assets...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Recent Transactions -->
