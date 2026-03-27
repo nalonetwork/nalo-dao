@@ -97,10 +97,12 @@ async function checkExistingConnection() {
         
         // Trigger treasury dashboard update if on treasury page
         if (typeof showDashboard === 'function') {
+            console.log('Triggering treasury dashboard...');
             showDashboard();
         }
-        if (typeof loadTreasuryData === 'function') {
-            loadTreasuryData();
+        if (typeof loadAllData === 'function') {
+            console.log('Loading all treasury data...');
+            loadAllData();
         }
     }
 }
@@ -296,10 +298,12 @@ async function connectFreighterWallet() {
         
         // Trigger treasury dashboard update if on treasury page
         if (typeof showDashboard === 'function') {
+            console.log('Triggering treasury dashboard...');
             showDashboard();
         }
-        if (typeof loadTreasuryData === 'function') {
-            loadTreasuryData();
+        if (typeof loadAllData === 'function') {
+            console.log('Loading all treasury data...');
+            loadAllData();
         }
         
     } catch (error) {
