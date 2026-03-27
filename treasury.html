@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NaloDAO Treasury Dashboard - Real-time treasury management and transparency">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>Treasury Dashboard - NaloDAO</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2d5016;
+            --light-green: #4a7c2c;
+            --accent-gold: #d4af37;
+            --earth-brown: #8b6f47;
+            --bg-light: #f8f9f5;
+            --text-dark: #2c3e20;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .wallet-btn {
+            background-color: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .wallet-btn:hover {
+            background-color: #f0c14b;
+            transform: translateY(-2px);
+        }
+
+        .wallet-connected {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            max-width: 1400px;
+            margin: 100px auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        .stat-subtext {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .chart-card h3 {
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Transactions Table */
+        .transactions-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .transactions-section h3 {
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions-table th {
+            background: var(--bg-light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .transactions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transactions-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .tx-hash {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .tx-amount {
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .tx-type {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tx-type.incoming {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .tx-type.outgoing {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0,0,0,0.1);
+            border-top-color: var(--light-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        /* Connect Prompt */
+        .connect-prompt {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .connect-prompt h2 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .connect-prompt p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #f0c14b;
+            transform: translateY(-2px);
+        }
+
+        /* Allocation Chart */
+        .allocation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        .allocation-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .allocation-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .allocation-percentage {
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                margin-top: 80px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .transactions-table {
+                font-size: 0.85rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">🌱 NaloDAO</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="treasury.html">Treasury</a></li>
+                <li><a href="index.html#mission">Mission</a></li>
+                <li><button id="walletBtn" class="wallet-btn">Connect Wallet</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1>🏦 Treasury Dashboard</h1>
+            <p>Real-time transparency into NaloDAO's regenerative funding</p>
+        </div>
+
+        <!-- Connect Prompt (shown when wallet not connected) -->
+        <div id="connectPrompt" class="connect-prompt">
+            <h2>Connect Your Wallet</h2>
+            <p>Connect your Stellar wallet to view detailed treasury information and your NALO token balance.</p>
+            <button onclick="connectWallet()" class="btn-primary">Connect Wallet</button>
+        </div>
+
+        <!-- Dashboard Content (shown when wallet connected) -->
+        <div id="dashboardContent" style="display: none;">
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-label">Total Treasury Value</div>
+                    <div class="stat-value" id="totalValue">Loading...</div>
+                    <div class="stat-subtext">Across all assets</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-label">XLM Balance</div>
+                    <div class="stat-value" id="xlmBalance">Loading...</div>
+                    <div class="stat-subtext">Stellar Lumens</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💵</div>
+                    <div class="stat-label">USDC Balance</div>
+                    <div class="stat-value" id="usdcBalance">Loading...</div>
+                    <div class="stat-subtext">USD Coin</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🪙</div>
+                    <div class="stat-label">Your NALO Tokens</div>
+                    <div class="stat-value" id="naloBalance">Loading...</div>
+                    <div class="stat-subtext">Governance tokens</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <!-- Treasury Allocation -->
+                <div class="chart-card">
+                    <h3>📊 Treasury Allocation</h3>
+                    <div id="allocationChart">
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <div class="allocation-color" style="background: #4a7c2c;"></div>
+                                <span>Operating Reserve</span>
+                            </div>
+                            <div class="allocation-percentage">30%</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <div class="allocation-color" style="background: #d4af37;"></div>
+                                <span>Project Funding</span>
+                            </div>
+                            <div class="allocation-percentage">40%</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <div class="allocation-color" style="background: #8b6f47;"></div>
+                                <span>Emergency Fund</span>
+                            </div>
+                            <div class="allocation-percentage">20%</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <div class="allocation-color" style="background: #2d5016;"></div>
+                                <span>Impact Investment</span>
+                            </div>
+                            <div class="allocation-percentage">10%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Sig Status -->
+                <div class="chart-card">
+                    <h3>🔒 Multi-Sig Security</h3>
+                    <div style="padding: 1rem 0;">
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <span>Required Signatures</span>
+                            </div>
+                            <div class="allocation-percentage">3 of 5</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <span>Active Signers</span>
+                            </div>
+                            <div class="allocation-percentage">5</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <span>Pending Proposals</span>
+                            </div>
+                            <div class="allocation-percentage" id="pendingProposals">0</div>
+                        </div>
+                        <div class="allocation-item">
+                            <div class="allocation-label">
+                                <span>Total Transactions</span>
+                            </div>
+                            <div class="allocation-percentage" id="totalTransactions">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="transactions-section">
+                <h3>📜 Recent Transactions</h3>
+                <div id="transactionsLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading transactions...</p>
+                </div>
+                <div id="transactionsError" class="error-message" style="display: none;"></div>
+                <table class="transactions-table" id="transactionsTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Asset</th>
+                            <th>Transaction Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsBody">
+                        <!-- Transactions will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Load Freighter API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
+    
+    <!-- Load Stellar SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/11.2.2/stellar-sdk.min.js"></script>
+    
+    <!-- Treasury Dashboard Script -->
+    <script src="js/treasury.js"></script>
+</body>
+</html>
