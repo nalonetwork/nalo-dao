@@ -1,0 +1,312 @@
+# ============================================
+# NaloDAO .gitignore
+# Prevents sensitive and unnecessary files from being committed to Git
+# ============================================
+
+# ============================================
+# CRITICAL SECURITY - NEVER COMMIT THESE
+# ============================================
+
+# Stellar Private Keys & Seeds (MOST IMPORTANT!)
+*.secret
+*.seed
+*_secret.txt
+*_seed.txt
+keys/
+secrets/
+.stellar/
+stellar-keys/
+
+# Environment Variables (contains API keys, secrets)
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env*.local
+
+# Configuration files with sensitive data
+config.local.js
+config.local.json
+secrets.json
+credentials.json
+
+# ============================================
+# Dependencies & Package Managers
+# ============================================
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Package manager lock files (optional - some teams commit these)
+# Uncomment if you want to ignore them:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# ============================================
+# Build Output & Distribution
+# ============================================
+
+# Build directories
+build/
+dist/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.vuepress/dist/
+
+# Production builds
+*.min.js
+*.min.css
+bundle.js
+bundle.css
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains IDEs (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw[a-p]
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# Operating System Files
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ============================================
+# Testing & Coverage
+# ============================================
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+lib-cov/
+
+# Jest
+jest-coverage/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# ============================================
+# Logs & Temporary Files
+# ============================================
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ============================================
+# Database Files (if using local DB)
+# ============================================
+
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# ============================================
+# Blockchain & Wallet Specific
+# ============================================
+
+# Wallet files
+wallet.dat
+*.wallet
+keystore/
+
+# Transaction logs (may contain sensitive data)
+transactions.log
+tx-history.json
+
+# Local blockchain data (if running local node)
+blockchain-data/
+stellar-core-data/
+
+# ============================================
+# Documentation Build Files
+# ============================================
+
+# Generated documentation
+docs/_build/
+site/
+_site/
+
+# ============================================
+# Miscellaneous
+# ============================================
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Certificates (never commit!)
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# Backup files
+*.orig
+*.rej
+
+# Python (if using Python scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# Ruby (if using Ruby scripts)
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+
+# ============================================
+# Project Specific
+# ============================================
+
+# Custom build artifacts
+public/build/
+static/generated/
+
+# User-uploaded files (if applicable)
+uploads/
+user-content/
+
+# Analytics & tracking data
+analytics/
+*.analytics
+
+# ============================================
+# Optional: Large Files
+# ============================================
+
+# Uncomment if you want to prevent large files
+# *.mp4
+# *.mov
+# *.avi
+# *.mkv
+# *.pdf (if large)
+# *.psd
+# *.ai
+
+# ============================================
+# Keep These Files (Exceptions)
+# ============================================
+
+# Force include certain files even if they match patterns above
+!.gitkeep
+!.github/
+!.vscode/extensions.json
+!.vscode/settings.json
