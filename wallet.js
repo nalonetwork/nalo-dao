@@ -47,6 +47,12 @@ function initWalletManager() {
         walletBtn.onclick = handleWalletConnect;
     }
     
+    // Set up connect button (for treasury page)
+    const connectBtn = document.getElementById('connectBtn');
+    if (connectBtn) {
+        connectBtn.onclick = handleWalletConnect;
+    }
+    
     // Set up modal close button
     const closeBtn = document.querySelector('.close');
     if (closeBtn) {
@@ -80,7 +86,16 @@ function checkExistingConnection() {
         console.log('Restoring previous connection...');
         walletManager.connected = true;
         walletManager.publicKey = savedKey;
+        walletManager.network = sessionStorage.getItem('nalo_wallet_network') || 'PUBLIC';
         updateWalletButton(true);
+        
+        // Trigger treasury dashboard update if on treasury page
+        if (typeof showDashboard === 'function') {
+            showDashboard();
+        }
+        if (typeof loadTreasuryData === 'function') {
+            loadTreasuryData();
+        }
     }
 }
 
@@ -145,6 +160,7 @@ function showMobileInstallPrompt() {
     
     if (!modal || !status) return;
     
+    status.style.display = 'block';
     status.innerHTML = `
         <div style="text-align: center; padding: 1rem;">
             <h3 style="color: var(--primary-green); margin-bottom: 1rem;">📱 Freighter Mobile Required</h3>
@@ -173,6 +189,7 @@ function showDesktopInstallPrompt() {
     
     if (!modal || !status) return;
     
+    status.style.display = 'block';
     status.innerHTML = `
         <div style="text-align: center; padding: 1rem;">
             <h3 style="color: var(--primary-green); margin-bottom: 1rem;">🔌 Freighter Extension Required</h3>
@@ -204,6 +221,7 @@ async function connectFreighterWallet() {
     if (!modal || !status) return;
     
     // Show loading
+    status.style.display = 'block';
     status.innerHTML = `
         <div style="text-align: center; padding: 2rem;">
             <div class="spinner"></div>
@@ -256,6 +274,14 @@ async function connectFreighterWallet() {
         updateWalletButton(true);
         showWalletDetails();
         
+        // Trigger treasury dashboard update if on treasury page
+        if (typeof showDashboard === 'function') {
+            showDashboard();
+        }
+        if (typeof loadTreasuryData === 'function') {
+            loadTreasuryData();
+        }
+        
     } catch (error) {
         console.error('Connection failed:', error);
         
@@ -296,11 +322,11 @@ function showWalletDetails() {
     const publicKeyEl = document.getElementById('publicKey');
     const networkEl = document.getElementById('network');
     
-    if (!modal || !status || !details) return;
+    if (!modal) return;
     
     // Hide status, show details
-    status.style.display = 'none';
-    details.style.display = 'block';
+    if (status) status.style.display = 'none';
+    if (details) details.style.display = 'block';
     
     // Update details
     if (publicKeyEl) {
@@ -339,6 +365,12 @@ function closeModal() {
     if (modal) {
         modal.style.display = 'none';
     }
+    
+    // Reset status display
+    const status = document.getElementById('walletStatus');
+    if (status) {
+        status.style.display = 'block';
+    }
 }
 
 /**
@@ -355,6 +387,11 @@ function disconnectWallet() {
     
     updateWalletButton(false);
     closeModal();
+    
+    // Trigger treasury page update if applicable
+    if (typeof showConnectPrompt === 'function') {
+        showConnectPrompt();
+    }
     
     console.log('Wallet disconnected');
 }
