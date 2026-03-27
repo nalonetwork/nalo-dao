@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NaloDAO Treasury Dashboard - Complete account balance and asset overview">
+    <meta name="description" content="NaloDAO Treasury Dashboard - Real-time view of our Stellar blockchain treasury">
     
     <!-- Security Headers -->
     <meta http-equiv="X-Frame-Options" content="DENY">
@@ -126,6 +126,44 @@
             cursor: pointer;
         }
 
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--primary-green);
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu .wallet-btn {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
         /* Dashboard Container */
         .dashboard {
             max-width: 1400px;
@@ -135,7 +173,7 @@
 
         .dashboard-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .dashboard-header h1 {
@@ -149,23 +187,81 @@
             font-size: 1.1rem;
         }
 
-        .wallet-address {
-            background: var(--white);
-            padding: 1rem;
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
             border-radius: 10px;
-            margin-top: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-banner-icon {
+            font-size: 2rem;
+        }
+
+        .info-banner-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-address {
             font-family: monospace;
             font-size: 0.9rem;
-            color: #666;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
             word-break: break-all;
+        }
+
+        /* Connect Prompt */
+        .connect-prompt {
+            background: var(--white);
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .connect-prompt h2 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .connect-prompt p {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #f0c14b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
@@ -178,30 +274,42 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         }
 
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
         .stat-label {
             color: #666;
             font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
             color: var(--primary-green);
         }
 
-        .stat-subtext {
+        .stat-change {
             font-size: 0.85rem;
-            color: #999;
             margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: #4caf50;
+        }
+
+        .stat-change.neutral {
+            color: #666;
         }
 
         /* Assets Section */
@@ -210,18 +318,37 @@
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
-        .assets-section h3 {
-            color: var(--primary-green);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+        .section-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
+        .section-header h2 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+        }
+
+        .refresh-btn {
+            background: var(--light-green);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-green);
+        }
+
+        /* Tables */
         .assets-table {
             width: 100%;
             border-collapse: collapse;
@@ -245,48 +372,23 @@
             background: var(--bg-light);
         }
 
-        .asset-balance {
+        .asset-name {
             font-weight: 600;
             color: var(--primary-green);
+        }
+
+        .asset-code {
             font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        .asset-value {
-            font-weight: 600;
-            color: var(--accent-gold);
-        }
-
-        .asset-type-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .issuer-link {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .issuer-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Transactions Table */
+        /* Transactions Section */
         .transactions-section {
             background: var(--white);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .transactions-section h3 {
-            color: var(--primary-green);
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
         }
 
         .transactions-table {
@@ -300,6 +402,7 @@
             text-align: left;
             font-weight: 600;
             color: var(--text-dark);
+            border-bottom: 2px solid #ddd;
         }
 
         .transactions-table td {
@@ -311,22 +414,6 @@
             background: var(--bg-light);
         }
 
-        .tx-hash {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .tx-hash:hover {
-            text-decoration: underline;
-        }
-
-        .tx-amount {
-            font-weight: 600;
-            color: var(--primary-green);
-        }
-
         .tx-type {
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
@@ -334,14 +421,20 @@
             font-weight: 600;
         }
 
-        .tx-type.incoming {
-            background: #d4edda;
-            color: #155724;
+        .tx-type.payment {
+            background: #e3f2fd;
+            color: #1976d2;
         }
 
-        .tx-type.outgoing {
-            background: #f8d7da;
-            color: #721c24;
+        .tx-type.create {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .tx-hash {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #666;
         }
 
         /* Loading State */
@@ -352,9 +445,9 @@
 
         .spinner {
             display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(0,0,0,0.1);
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0,0,0,0.1);
             border-top-color: var(--light-green);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -365,70 +458,17 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Error State */
-        .error-message {
-            background: #fff3cd;
-            color: #856404;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            border-left: 4px solid #ffc107;
-        }
-
-        /* Connect Prompt */
-        .connect-prompt {
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .connect-prompt h2 {
-            color: var(--primary-green);
-            margin-bottom: 1rem;
-        }
-
-        .connect-prompt p {
+            padding: 3rem;
             color: #666;
-            margin-bottom: 2rem;
         }
 
-        .btn-primary {
-            background-color: var(--accent-gold);
-            color: var(--text-dark);
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #f0c14b;
-            transform: translateY(-2px);
-        }
-
-        /* Info Banner */
-        .info-banner {
-            background: #d1ecf1;
-            color: #0c5460;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            border-left: 4px solid #17a2b8;
-        }
-
-        .info-banner a {
-            color: #0c5460;
-            font-weight: 600;
-            text-decoration: underline;
-        }
-
-        .info-banner a:hover {
-            color: #062c33;
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
         /* Footer */
@@ -480,18 +520,127 @@
             opacity: 0.8;
         }
 
+        /* Wallet Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--text-dark);
+        }
+
+        .wallet-info {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-info p {
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+
+        .wallet-info strong {
+            color: var(--primary-green);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .dashboard {
                 margin-top: 80px;
+                padding: 0 1rem;
+            }
+
+            .dashboard-header h1 {
+                font-size: 1.75rem;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
-            .assets-table, .transactions-table {
-                font-size: 0.85rem;
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .assets-section,
+            .transactions-section {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+
+            .assets-table,
+            .transactions-table {
+                font-size: 0.8rem;
+                min-width: 600px;
+            }
+
+            .assets-table th,
+            .assets-table td,
+            .transactions-table th,
+            .transactions-table td {
+                padding: 0.5rem;
             }
 
             .nav-links {
@@ -500,6 +649,43 @@
 
             .menu-toggle {
                 display: block;
+            }
+
+            .connect-prompt {
+                padding: 2rem 1rem;
+            }
+
+            .connect-prompt h2 {
+                font-size: 1.5rem;
+            }
+
+            .btn-primary {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .info-banner {
+                font-size: 0.9rem;
+                padding: 1rem;
+            }
+
+            .wallet-address {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stat-icon {
+                font-size: 1.5rem;
+            }
+
+            .assets-table,
+            .transactions-table {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -522,126 +708,118 @@
         </nav>
     </header>
 
-    <!-- Dashboard -->
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wallet Connection</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="walletStatus">
+                <p style="text-align: center; padding: 1rem;">Initializing wallet connection...</p>
+            </div>
+            <div id="walletDetails" class="wallet-info" style="display:none;">
+                <p><strong>Connected Address:</strong></p>
+                <p id="publicKey" style="font-size: 0.9rem; color: #666;"></p>
+                <p><strong>Network:</strong> <span id="network">PUBLIC</span></p>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    ⚠️ Never share your private keys. NaloDAO will never ask for them.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
     <div class="dashboard">
         <div class="dashboard-header">
-            <h1>💼 Account Balance Dashboard</h1>
-            <p>Complete overview of your Stellar wallet assets</p>
+            <h1>💰 Treasury Dashboard</h1>
+            <p>Real-time view of NaloDAO's Stellar blockchain treasury</p>
         </div>
 
-        <!-- Connect Prompt (shown when wallet not connected) -->
+        <!-- Connect Wallet Prompt (shown when not connected) -->
         <div id="connectPrompt" class="connect-prompt">
-            <h2>Connect Your Wallet</h2>
-            <p>Connect your Freighter wallet to view your complete account balance, all assets, and transaction history on the Stellar PUBLIC network.</p>
-            <button onclick="connectWallet()" class="btn-primary">Connect Freighter Wallet</button>
-            <p style="margin-top: 2rem; font-size: 0.9rem; color: #999;">
-                Don't have Freighter? <a href="https://www.freighter.app/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-gold);">Install it here</a>
-            </p>
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">
-                <a href="index.html" style="color: var(--primary-green);">← Back to Homepage</a>
-            </p>
+            <h2>🔌 Connect Your Wallet</h2>
+            <p>Connect your Freighter wallet to view the NaloDAO treasury dashboard</p>
+            <button id="connectBtn" class="btn-primary">Connect Freighter Wallet</button>
         </div>
 
-        <!-- Dashboard Content (shown when wallet connected) -->
+        <!-- Dashboard Content (shown when connected) -->
         <div id="dashboardContent" style="display: none;">
             
             <!-- Info Banner -->
             <div class="info-banner">
-                <strong>ℹ️ Connected Wallet (PUBLIC Network):</strong> Displaying all assets and balances from your connected Freighter wallet on Stellar mainnet. Data refreshes automatically every 30 seconds.
-                <div class="wallet-address" id="connectedAddress">Loading...</div>
+                <div class="info-banner-icon">ℹ️</div>
+                <div class="info-banner-content">
+                    <h3>Treasury Address</h3>
+                    <p>All transactions are publicly verifiable on the Stellar blockchain</p>
+                    <div class="wallet-address" id="treasuryAddress">Loading...</div>
+                </div>
             </div>
 
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-label">Total Value (USD)</div>
-                    <div class="stat-value" id="totalValue">Loading...</div>
-                    <div class="stat-subtext">Estimated portfolio value</div>
+                    <div class="stat-header">
+                        <span class="stat-label">Total Balance</span>
+                        <span class="stat-icon">💰</span>
+                    </div>
+                    <div class="stat-value" id="totalBalance">$0.00</div>
+                    <div class="stat-change neutral">XLM Balance: <span id="xlmBalance">0</span></div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-label">XLM Balance</div>
-                    <div class="stat-value" id="xlmBalance">Loading...</div>
-                    <div class="stat-subtext">Stellar Lumens</div>
+                    <div class="stat-header">
+                        <span class="stat-label">Total Assets</span>
+                        <span class="stat-icon">🪙</span>
+                    </div>
+                    <div class="stat-value" id="totalAssets">0</div>
+                    <div class="stat-change neutral">Different tokens held</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon">💵</div>
-                    <div class="stat-label">Stablecoins</div>
-                    <div class="stat-value" id="usdcBalance">Loading...</div>
-                    <div class="stat-subtext">USDC + yUSDC</div>
+                    <div class="stat-header">
+                        <span class="stat-label">Transactions</span>
+                        <span class="stat-icon">📊</span>
+                    </div>
+                    <div class="stat-value" id="totalTransactions">0</div>
+                    <div class="stat-change neutral">All-time activity</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon">🪙</div>
-                    <div class="stat-label">NALO Tokens</div>
-                    <div class="stat-value" id="naloBalance">Loading...</div>
-                    <div class="stat-subtext">Governance tokens</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📊</div>
-                    <div class="stat-label">Total Assets</div>
-                    <div class="stat-value" id="totalAssets">Loading...</div>
-                    <div class="stat-subtext">Different asset types</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📜</div>
-                    <div class="stat-label">Transactions</div>
-                    <div class="stat-value" id="totalTransactions">Loading...</div>
-                    <div class="stat-subtext">Recent activity</div>
+                    <div class="stat-header">
+                        <span class="stat-label">Multi-Sig</span>
+                        <span class="stat-icon">🔒</span>
+                    </div>
+                    <div class="stat-value">3 of 5</div>
+                    <div class="stat-change positive">Secure governance</div>
                 </div>
             </div>
 
-            <!-- All Assets Section -->
-            <div class="assets-section" id="assetsSection" style="display: none;">
-                <h3>🔷 All Assets in Your Wallet</h3>
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Balance</th>
-                            <th>Value (USD)</th>
-                            <th>Type</th>
-                            <th>Issuer</th>
-                        </tr>
-                    </thead>
-                    <tbody id="assetsTableBody">
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 2rem;">
-                                <div class="spinner"></div>
-                                <p>Loading assets...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Assets Section -->
+            <div class="assets-section">
+                <div class="section-header">
+                    <h2>💎 Assets</h2>
+                    <button class="refresh-btn" onclick="loadTreasuryData()">🔄 Refresh</button>
+                </div>
+                <div id="assetsContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading assets...</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Recent Transactions -->
+            <!-- Transactions Section -->
             <div class="transactions-section">
-                <h3>📜 Recent Transactions</h3>
-                <div id="transactionsLoading" class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading transactions...</p>
+                <div class="section-header">
+                    <h2>📜 Recent Transactions</h2>
                 </div>
-                <div id="transactionsError" class="error-message" style="display: none;"></div>
-                <table class="transactions-table" id="transactionsTable" style="display: none;">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Asset</th>
-                            <th>Transaction Hash</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsBody">
-                        <!-- Transactions will be inserted here -->
-                    </tbody>
-                </table>
+                <div id="transactionsContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading transactions...</p>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -659,8 +837,8 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="treasury.html">Treasury Dashboard</a></li>
+                    <li><a href="whitepaper.html">Whitepaper</a></li>
                     <li><a href="index.html#mission">Our Mission</a></li>
-                    <li><a href="index.html#stellar">Stellar Integration</a></li>
                     <li><a href="https://www.nalodesigns.com" target="_blank" rel="noopener noreferrer">NaloDesigns</a></li>
                 </ul>
             </div>
@@ -688,13 +866,57 @@
         </div>
     </footer>
 
-    <!-- Load Freighter API -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
-    
     <!-- Load Stellar SDK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/11.2.2/stellar-sdk.min.js"></script>
     
-    <!-- Treasury Dashboard Script -->
+    <!-- Load Freighter API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.7.1/index.min.js"></script>
+    
+    <!-- Load Wallet Manager -->
+    <script src="js/wallet.js"></script>
+    
+    <!-- Load Treasury Manager -->
     <script src="js/treasury.js"></script>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                let mobileMenu = document.querySelector('.mobile-menu');
+                
+                if (!mobileMenu) {
+                    mobileMenu = document.createElement('div');
+                    mobileMenu.className = 'mobile-menu';
+                    mobileMenu.innerHTML = navLinks.innerHTML;
+                    document.body.appendChild(mobileMenu);
+                }
+                
+                mobileMenu.classList.toggle('active');
+                
+                if (mobileMenu.classList.contains('active')) {
+                    menuToggle.textContent = '✕';
+                } else {
+                    menuToggle.textContent = '☰';
+                }
+            });
+        }
+        
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                if (!mobileMenu.contains(event.target) && event.target !== menuToggle) {
+                    mobileMenu.classList.remove('active');
+                    if (menuToggle) {
+                        menuToggle.textContent = '☰';
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
