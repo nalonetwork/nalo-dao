@@ -520,85 +520,29 @@
             opacity: 0.8;
         }
 
-        /* Wallet Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            animation: slideIn 0.3s ease;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header h3 {
-            color: var(--primary-green);
-            font-size: 1.5rem;
-        }
-
-        .close {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close:hover {
-            color: var(--text-dark);
-        }
-
-        .wallet-info {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .wallet-info p {
-            margin: 0.5rem 0;
-            word-break: break-all;
-        }
-
-        .wallet-info strong {
-            color: var(--primary-green);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+        <!-- Wallet Modal -->
+<div id="walletModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Wallet Connection</h3>
+            <span class="close">&times;</span>
+        </div>
+        <div id="walletStatus">
+            <p style="text-align: center; padding: 1rem;">Initializing wallet connection...</p>
+        </div>
+        <div id="walletDetails" class="wallet-info" style="display:none;">
+            <p><strong>Connected Address:</strong></p>
+            <p id="publicKey" style="font-size: 0.9rem; color: #666; word-break: break-all;"></p>
+            <p style="margin-top: 1rem;"><strong>Network:</strong> <span id="network">PUBLIC</span></p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                ⚠️ Never share your private keys. NaloDAO will never ask for them.
+            </p>
+            <button onclick="disconnectWallet()" class="action-btn" style="background: #dc3545; margin-top: 1rem; width: 100%;">
+                Disconnect Wallet
+            </button>
+        </div>
+    </div>
+</div>
 
         /* Responsive */
         @media (max-width: 768px) {
