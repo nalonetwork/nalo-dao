@@ -1,6 +1,6 @@
 /**
  * NaloDAO Wallet Manager
- * Handles Freighter wallet connection with mobile support and real-time balance display
+ * Handles Freighter wallet connection with mobile support
  */
 
 console.log('=== NaloDAO Wallet Manager Loading ===');
@@ -9,17 +9,14 @@ console.log('=== NaloDAO Wallet Manager Loading ===');
 const CONFIG = {
     network: 'PUBLIC',
     freighterDownloadUrl: 'https://www.freighter.app/',
-    freighterMobileUrl: 'https://www.freighter.app/mobile',
-    horizonUrl: 'https://horizon.stellar.org',
-    stellarExpertUrl: 'https://stellar.expert/explorer/public'
+    freighterMobileUrl: 'https://www.freighter.app/mobile'
 };
 
 // State
 let walletManager = {
     connected: false,
     publicKey: null,
-    network: null,
-    balances: []
+    network: null
 };
 
 /**
@@ -50,12 +47,6 @@ function initWalletManager() {
         walletBtn.onclick = handleWalletConnect;
     }
     
-    // Set up connect button (for treasury page)
-    const connectBtn = document.getElementById('connectBtn');
-    if (connectBtn) {
-        connectBtn.onclick = handleWalletConnect;
-    }
-    
     // Set up modal close button
     const closeBtn = document.querySelector('.close');
     if (closeBtn) {
@@ -81,7 +72,7 @@ function initWalletManager() {
 /**
  * Check for existing wallet connection
  */
-async function checkExistingConnection() {
+function checkExistingConnection() {
     const savedKey = sessionStorage.getItem('nalo_wallet_key');
     const wasConnected = sessionStorage.getItem('nalo_wallet_connected');
     
@@ -89,21 +80,7 @@ async function checkExistingConnection() {
         console.log('Restoring previous connection...');
         walletManager.connected = true;
         walletManager.publicKey = savedKey;
-        walletManager.network = sessionStorage.getItem('nalo_wallet_network') || 'PUBLIC';
         updateWalletButton(true);
-        
-        // Load wallet balance
-        await loadWalletBalance(savedKey);
-        
-        // Trigger treasury dashboard update if on treasury page
-        if (typeof showDashboard === 'function') {
-            console.log('Triggering treasury dashboard...');
-            showDashboard();
-        }
-        if (typeof loadAllData === 'function') {
-            console.log('Loading all treasury data...');
-            loadAllData();
-        }
     }
 }
 
@@ -165,13 +142,8 @@ function handleDesktopConnection() {
 function showMobileInstallPrompt() {
     const modal = document.getElementById('walletModal');
     const status = document.getElementById('walletStatus');
-    const details = document.getElementById('walletDetails');
     
     if (!modal || !status) return;
-    
-    // Hide details, show status
-    if (details) details.style.display = 'none';
-    status.style.display = 'block';
     
     status.innerHTML = `
         <div style="text-align: center; padding: 1rem;">
@@ -198,13 +170,8 @@ function showMobileInstallPrompt() {
 function showDesktopInstallPrompt() {
     const modal = document.getElementById('walletModal');
     const status = document.getElementById('walletStatus');
-    const details = document.getElementById('walletDetails');
     
     if (!modal || !status) return;
-    
-    // Hide details, show status
-    if (details) details.style.display = 'none';
-    status.style.display = 'block';
     
     status.innerHTML = `
         <div style="text-align: center; padding: 1rem;">
@@ -233,14 +200,10 @@ async function connectFreighterWallet() {
     
     const modal = document.getElementById('walletModal');
     const status = document.getElementById('walletStatus');
-    const details = document.getElementById('walletDetails');
     
     if (!modal || !status) return;
     
-    // Hide details, show loading status
-    if (details) details.style.display = 'none';
-    status.style.display = 'block';
-    
+    // Show loading
     status.innerHTML = `
         <div style="text-align: center; padding: 2rem;">
             <div class="spinner"></div>
@@ -289,22 +252,9 @@ async function connectFreighterWallet() {
         sessionStorage.setItem('nalo_wallet_key', publicKey);
         sessionStorage.setItem('nalo_wallet_network', network);
         
-        // Load wallet balance
-        await loadWalletBalance(publicKey);
-        
         // Update UI
         updateWalletButton(true);
         showWalletDetails();
-        
-        // Trigger treasury dashboard update if on treasury page
-        if (typeof showDashboard === 'function') {
-            console.log('Triggering treasury dashboard...');
-            showDashboard();
-        }
-        if (typeof loadAllData === 'function') {
-            console.log('Loading all treasury data...');
-            loadAllData();
-        }
         
     } catch (error) {
         console.error('Connection failed:', error);
@@ -330,35 +280,6 @@ async function connectFreighterWallet() {
 }
 
 /**
- * Load wallet balance from Stellar network
- */
-async function loadWalletBalance(publicKey) {
-    console.log('Loading wallet balance for:', publicKey);
-    
-    try {
-        // Fetch account data from Horizon
-        const response = await fetch(`${CONFIG.horizonUrl}/accounts/${publicKey}`);
-        
-        if (!response.ok) {
-            throw new Error('Failed to load account data');
-        }
-        
-        const accountData = await response.json();
-        console.log('Account data loaded:', accountData);
-        
-        // Store balances
-        walletManager.balances = accountData.balances || [];
-        
-        return accountData;
-        
-    } catch (error) {
-        console.error('Failed to load wallet balance:', error);
-        walletManager.balances = [];
-        return null;
-    }
-}
-
-/**
  * Validate Stellar address format
  */
 function isValidStellarAddress(address) {
@@ -375,61 +296,19 @@ function showWalletDetails() {
     const publicKeyEl = document.getElementById('publicKey');
     const networkEl = document.getElementById('network');
     
-    if (!modal) return;
+    if (!modal || !status || !details) return;
     
     // Hide status, show details
-    if (status) status.style.display = 'none';
-    if (details) {
-        details.style.display = 'block';
-        
-        // Update wallet address
-        if (publicKeyEl) {
-            publicKeyEl.textContent = walletManager.publicKey;
-        }
-        
-        // Update network
-        if (networkEl) {
-            networkEl.textContent = walletManager.network || 'PUBLIC';
-        }
-        
-        // Add balance information
-        const balanceInfo = document.createElement('div');
-        balanceInfo.style.marginTop = '1rem';
-        balanceInfo.style.padding = '1rem';
-        balanceInfo.style.background = '#f0f0f0';
-        balanceInfo.style.borderRadius = '8px';
-        
-        if (walletManager.balances.length > 0) {
-            const xlmBalance = walletManager.balances.find(b => b.asset_type === 'native');
-            const xlmAmount = xlmBalance ? parseFloat(xlmBalance.balance).toFixed(2) : '0.00';
-            
-            balanceInfo.innerHTML = `
-                <p style="margin: 0.5rem 0;"><strong>💰 Balance:</strong></p>
-                <p style="margin: 0.5rem 0; font-size: 1.2rem; color: var(--primary-green);">${xlmAmount} XLM</p>
-                <p style="margin: 0.5rem 0; font-size: 0.85rem; color: #666;">≈ $${(xlmAmount * 0.12).toFixed(2)} USD</p>
-                <p style="margin-top: 1rem; font-size: 0.85rem;">
-                    <a href="${CONFIG.stellarExpertUrl}/account/${walletManager.publicKey}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       style="color: var(--light-green); text-decoration: none;">
-                        View on Stellar Expert →
-                    </a>
-                </p>
-            `;
-        } else {
-            balanceInfo.innerHTML = `
-                <p style="margin: 0.5rem 0; color: #666;">Loading balance...</p>
-            `;
-        }
-        
-        // Check if balance info already exists, if not add it
-        const existingBalanceInfo = details.querySelector('.balance-info');
-        if (existingBalanceInfo) {
-            existingBalanceInfo.replaceWith(balanceInfo);
-        } else {
-            balanceInfo.className = 'balance-info';
-            details.appendChild(balanceInfo);
-        }
+    status.style.display = 'none';
+    details.style.display = 'block';
+    
+    // Update details
+    if (publicKeyEl) {
+        publicKeyEl.textContent = walletManager.publicKey;
+    }
+    
+    if (networkEl) {
+        networkEl.textContent = walletManager.network || 'PUBLIC';
     }
     
     // Show modal
@@ -469,7 +348,6 @@ function disconnectWallet() {
     walletManager.connected = false;
     walletManager.publicKey = null;
     walletManager.network = null;
-    walletManager.balances = [];
     
     sessionStorage.removeItem('nalo_wallet_connected');
     sessionStorage.removeItem('nalo_wallet_key');
@@ -477,11 +355,6 @@ function disconnectWallet() {
     
     updateWalletButton(false);
     closeModal();
-    
-    // Trigger treasury page update if applicable
-    if (typeof showConnectPrompt === 'function') {
-        showConnectPrompt();
-    }
     
     console.log('Wallet disconnected');
 }
