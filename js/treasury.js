@@ -1,13 +1,13 @@
 /**
  * NaloDAO Treasury Manager
- * Handles treasury data loading and display
+ * Handles treasury data loading and display with wallet integration
  */
 
 console.log('=== NaloDAO Treasury Manager Loading ===');
 
 // Configuration
 const TREASURY_CONFIG = {
-    // Replace with your actual treasury address
+    // NaloDAO Treasury Address
     treasuryAddress: 'GCZYLNGU4CA5NAWBAVTHMZH4JKXRCHLGO5CBFZXZRGDIGVQOHFKTI3JY',
     horizonUrl: 'https://horizon.stellar.org',
     stellarExpertUrl: 'https://stellar.expert/explorer/public'
@@ -20,6 +20,12 @@ let treasuryData = {
     loaded: false
 };
 
+let userWalletData = {
+    publicKey: null,
+    balances: [],
+    loaded: false
+};
+
 /**
  * Initialize Treasury Dashboard
  */
@@ -28,15 +34,34 @@ function initTreasuryDashboard() {
     
     // Check if wallet is connected
     const isConnected = sessionStorage.getItem('nalo_wallet_connected') === 'true';
+    const savedKey = sessionStorage.getItem('nalo_wallet_key');
     
-    if (isConnected) {
+    if (isConnected && savedKey) {
+        console.log('Wallet connected, loading dashboard...');
+        userWalletData.publicKey = savedKey;
         showDashboard();
-        loadTreasuryData();
+        loadAllData();
     } else {
+        console.log('No wallet connected, showing prompt...');
         showConnectPrompt();
     }
     
     console.log('✓ Treasury Dashboard initialized');
+}
+
+/**
+ * Load all data (treasury + user wallet)
+ */
+async function loadAllData() {
+    console.log('Loading all data...');
+    
+    // Load treasury data
+    await loadTreasuryData();
+    
+    // Load user wallet data if connected
+    if (userWalletData.publicKey) {
+        await loadUserWalletData();
+    }
 }
 
 /**
@@ -68,6 +93,131 @@ function showDashboard() {
 }
 
 /**
+ * Load user wallet data
+ */
+async function loadUserWalletData() {
+    console.log('Loading user wallet data for:', userWalletData.publicKey);
+    
+    try {
+        const response = await fetch(`${TREASURY_CONFIG.horizonUrl}/accounts/${userWalletData.publicKey}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to load user wallet data');
+        }
+        
+        const accountData = await response.json();
+        console.log('User wallet data loaded:', accountData);
+        
+        userWalletData.balances = accountData.balances || [];
+        userWalletData.loaded = true;
+        
+        // Update user wallet display
+        updateUserWalletDisplay();
+        
+    } catch (error) {
+        console.error('Failed to load user wallet data:', error);
+        userWalletData.balances = [];
+        userWalletData.loaded = false;
+    }
+}
+
+/**
+ * Update user wallet display
+ */
+function updateUserWalletDisplay() {
+    console.log('Updating user wallet display');
+    
+    // Find XLM balance
+    const xlmBalance = userWalletData.balances.find(b => b.asset_type === 'native');
+    const xlmAmount = xlmBalance ? parseFloat(xlmBalance.balance) : 0;
+    
+    // Create or update user wallet section
+    let userWalletSection = document.getElementById('userWalletSection');
+    
+    if (!userWalletSection) {
+        // Create new section
+        userWalletSection = document.createElement('div');
+        userWalletSection.id = 'userWalletSection';
+        userWalletSection.className = 'assets-section';
+        userWalletSection.style.marginBottom = '2rem';
+        
+        // Insert before treasury assets section
+        const assetsSection = document.querySelector('.assets-section');
+        if (assetsSection && assetsSection.parentNode) {
+            assetsSection.parentNode.insertBefore(userWalletSection, assetsSection);
+        }
+    }
+    
+    // Build HTML
+    let html = `
+        <div class="section-header">
+            <h2>💼 Your Wallet</h2>
+        </div>
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 10px; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Connected Wallet</p>
+                    <p style="font-family: monospace; font-size: 0.85rem; word-break: break-all;">${userWalletData.publicKey}</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">Balance</p>
+                    <p style="font-size: 2rem; font-weight: bold;">${xlmAmount.toFixed(2)} XLM</p>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">≈ $${(xlmAmount * 0.12).toFixed(2)} USD</p>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                <a href="${TREASURY_CONFIG.stellarExpertUrl}/account/${userWalletData.publicKey}" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   style="color: white; text-decoration: none; opacity: 0.9; font-size: 0.9rem;">
+                    View on Stellar Expert →
+                </a>
+            </div>
+        </div>
+    `;
+    
+    // Add assets table if user has multiple assets
+    if (userWalletData.balances.length > 1) {
+        html += `
+            <table class="assets-table">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Balance</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        userWalletData.balances.forEach(balance => {
+            const assetName = balance.asset_type === 'native' ? 'Stellar Lumens' : balance.asset_code;
+            const assetCode = balance.asset_type === 'native' ? 'XLM' : balance.asset_code;
+            const amount = parseFloat(balance.balance).toFixed(7);
+            const type = balance.asset_type === 'native' ? 'Native' : 'Custom';
+            
+            html += `
+                <tr>
+                    <td>
+                        <div class="asset-name">${assetName}</div>
+                        <div class="asset-code">${assetCode}</div>
+                    </td>
+                    <td>${amount}</td>
+                    <td>${type}</td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                </tbody>
+            </table>
+        `;
+    }
+    
+    userWalletSection.innerHTML = html;
+}
+
+/**
  * Load treasury data from Stellar
  */
 async function loadTreasuryData() {
@@ -79,7 +229,7 @@ async function loadTreasuryData() {
         
         // Load account data
         const account = await server.loadAccount(TREASURY_CONFIG.treasuryAddress);
-        console.log('Account loaded:', account);
+        console.log('Treasury account loaded:', account);
         
         // Update balances
         updateBalances(account.balances);
@@ -103,10 +253,10 @@ async function loadTreasuryData() {
 }
 
 /**
- * Update balances display
+ * Update balances display (Treasury)
  */
 function updateBalances(balances) {
-    console.log('Updating balances:', balances);
+    console.log('Updating treasury balances:', balances);
     
     // Find XLM balance
     const xlmBalance = balances.find(b => b.asset_type === 'native');
@@ -118,7 +268,6 @@ function updateBalances(balances) {
     const totalAssetsEl = document.getElementById('totalAssets');
     
     if (totalBalanceEl) {
-        // Approximate USD value (you'd want to fetch real price)
         const usdValue = (xlmAmount * 0.12).toFixed(2);
         totalBalanceEl.textContent = `$${usdValue}`;
     }
@@ -280,5 +429,21 @@ if (document.readyState === 'loading') {
 } else {
     initTreasuryDashboard();
 }
+
+// Listen for wallet connection events from other tabs/windows
+window.addEventListener('storage', function(e) {
+    if (e.key === 'nalo_wallet_connected') {
+        if (e.newValue === 'true') {
+            const savedKey = sessionStorage.getItem('nalo_wallet_key');
+            if (savedKey) {
+                userWalletData.publicKey = savedKey;
+                showDashboard();
+                loadAllData();
+            }
+        } else {
+            showConnectPrompt();
+        }
+    }
+});
 
 console.log('=== Treasury Manager Script Loaded ===');
