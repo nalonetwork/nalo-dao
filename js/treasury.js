@@ -1,15 +1,15 @@
 /**
  * NaloDAO Treasury Dashboard
- * Displays complete account balance from connected Freighter wallet
+ * Displays complete account balance from connected Freighter wallet on PUBLIC network
  */
 
 console.log('=== Treasury Dashboard Loading ===');
 
-// Configuration
+// Configuration - UPDATED TO PUBLIC NETWORK
 const CONFIG = {
-    // Use testnet for development
-    network: 'TESTNET',
-    horizonUrl: 'https://horizon-testnet.stellar.org',
+    // Use PUBLIC network (mainnet)
+    network: 'PUBLIC',
+    horizonUrl: 'https://horizon.stellar.org',
     
     // NALO token details (update when token is issued)
     naloAsset: {
@@ -17,23 +17,32 @@ const CONFIG = {
         issuer: 'GXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     },
     
-    // Known stablecoin issuers on testnet
+    // Known stablecoin issuers on PUBLIC network
     knownAssets: {
-        'USDC': ['GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5'],
-        'USDT': ['GCQTGZQQ5G4PTM2GL7CDIFKUBIPEC52BROAQIAPW53XBRJVN6ZJVTG6V']
+        'USDC': [
+            'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // Circle USDC
+            'GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG'  // Alternative USDC
+        ],
+        'USDT': [
+            'GCQTGZQQ5G4PTM2GL7CDIFKUBIPEC52BROAQIAPW53XBRJVN6ZJVTG6V'  // Tether USDT
+        ],
+        'yUSDC': [
+            'GDGTVWSM4MGS4T7Z6W4RPWOCHE2I6RDFCIFZGS3DOA63LWQTRNZNTTFF'  // Ultra Stellar yUSDC
+        ]
     },
     
     // Asset price estimates (for demo - in production, fetch from price API)
     assetPrices: {
-        'XLM': 0.10,
+        'XLM': 0.095,  // Updated approximate XLM price
         'USDC': 1.00,
         'USDT': 1.00,
+        'yUSDC': 1.00,
         'BTC': 70000.00,
         'ETH': 3500.00
     }
 };
 
-// Initialize Stellar SDK
+// Initialize Stellar SDK for PUBLIC network
 const server = new StellarSdk.Horizon.Server(CONFIG.horizonUrl);
 
 // Dashboard state
@@ -46,6 +55,8 @@ let refreshInterval = null;
  */
 async function initDashboard() {
     console.log('Initializing treasury dashboard...');
+    console.log('Network:', CONFIG.network);
+    console.log('Horizon URL:', CONFIG.horizonUrl);
     
     // Set up wallet button
     const walletBtn = document.getElementById('walletBtn');
@@ -89,6 +100,22 @@ async function connectWallet() {
             alert('Please install Freighter wallet extension to connect.\n\nVisit: https://www.freighter.app/');
             window.open('https://www.freighter.app/', '_blank');
             return;
+        }
+        
+        // Get network from Freighter
+        const network = await window.freighterApi.getNetwork();
+        console.log('Freighter network:', network);
+        
+        if (network !== 'PUBLIC') {
+            const switchNetwork = confirm(
+                'Your Freighter wallet is set to ' + network + ' network.\n\n' +
+                'This dashboard requires PUBLIC (mainnet) network.\n\n' +
+                'Please switch to PUBLIC network in Freighter settings and try again.\n\n' +
+                'Click OK to continue anyway (may show errors).'
+            );
+            if (!switchNetwork) {
+                return;
+            }
         }
         
         // Get public key
@@ -143,7 +170,16 @@ function showDashboard() {
     document.getElementById('dashboardContent').style.display = 'block';
     
     // Display connected wallet address
-    document.getElementById('connectedAddress').textContent = connectedWallet;
+    const addressElement = document.getElementById('connectedAddress');
+    addressElement.innerHTML = `
+        ${connectedWallet}
+        <br>
+        <a href="https://stellar.expert/explorer/public/account/${connectedWallet}" 
+           target="_blank" rel="noopener noreferrer" 
+           style="color: #0066cc; font-size: 0.9rem; text-decoration: none;">
+           View on Stellar Expert →
+        </a>
+    `;
     
     // Load dashboard data
     loadDashboardData();
@@ -175,24 +211,27 @@ async function loadDashboardData() {
         console.error('Error loading dashboard data:', error);
         
         if (error.response && error.response.status === 404) {
-            showError('This wallet has not been activated on the Stellar network yet. You need to fund it with at least 1 XLM to activate it.');
+            showError('This wallet has not been activated on the Stellar PUBLIC network yet. You need to fund it with at least 1 XLM to activate it.');
+        } else if (error.message && error.message.includes('Network Error')) {
+            showError('Network error. Please check your internet connection and try again.');
         } else {
-            showError('Failed to load dashboard data. Please refresh the page or try again later.');
+            showError('Failed to load dashboard data: ' + (error.message || 'Unknown error'));
         }
     }
 }
 
 /**
- * Load account data from Stellar
+ * Load account data from Stellar PUBLIC network
  */
 async function loadAccountData() {
     try {
-        console.log('Loading account data...');
+        console.log('Loading account data from PUBLIC network...');
         
-        // Load account from Stellar
+        // Load account from Stellar PUBLIC network
         accountData = await server.loadAccount(connectedWallet);
         
-        console.log('Account data loaded:', accountData);
+        console.log('Account data loaded successfully');
+        console.log('Account balances:', accountData.balances);
         
         // Parse all balances
         let xlmBalance = 0;
@@ -205,7 +244,7 @@ async function loadAccountData() {
             if (balance.asset_type === 'native') {
                 // XLM (native asset)
                 xlmBalance = amount;
-                const xlmValue = amount * (CONFIG.assetPrices.XLM || 0.10);
+                const xlmValue = amount * (CONFIG.assetPrices.XLM || 0.095);
                 totalValue += xlmValue;
                 
                 allAssets.push({
@@ -247,12 +286,17 @@ async function loadAccountData() {
             return b.value - a.value;
         });
         
+        console.log('Processed assets:', allAssets);
+        
         // Update summary stats
         const usdcAsset = allAssets.find(a => a.code === 'USDC');
+        const yusdcAsset = allAssets.find(a => a.code === 'yUSDC');
         const naloAsset = allAssets.find(a => a.code === CONFIG.naloAsset.code);
         
+        const totalStablecoins = (usdcAsset?.balance || 0) + (yusdcAsset?.balance || 0);
+        
         document.getElementById('xlmBalance').textContent = formatNumber(xlmBalance.toFixed(2)) + ' XLM';
-        document.getElementById('usdcBalance').textContent = '$' + formatNumber((usdcAsset?.balance || 0).toFixed(2));
+        document.getElementById('usdcBalance').textContent = '$' + formatNumber(totalStablecoins.toFixed(2));
         document.getElementById('totalValue').textContent = '$' + formatNumber(totalValue.toFixed(2));
         document.getElementById('naloBalance').textContent = formatNumber((naloAsset?.balance || 0).toFixed(2)) + ' NALO';
         document.getElementById('totalAssets').textContent = allAssets.length;
@@ -260,14 +304,11 @@ async function loadAccountData() {
         // Display all assets in detailed view
         displayAllAssets(allAssets);
         
-        console.log('Account data processed:', { 
-            totalAssets: allAssets.length, 
-            totalValue, 
-            xlmBalance 
-        });
+        console.log('Dashboard updated successfully');
         
     } catch (error) {
         console.error('Error loading account data:', error);
+        console.error('Error details:', error.response?.data || error.message);
         throw error;
     }
 }
@@ -281,6 +322,7 @@ function displayAllAssets(assets) {
     
     if (assets.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #666;">No assets found in this wallet.</td></tr>';
+        document.getElementById('assetsSection').style.display = 'block';
         return;
     }
     
@@ -340,7 +382,7 @@ function displayAllAssets(assets) {
             issuerCell.style.color = '#666';
         } else {
             const issuerLink = document.createElement('a');
-            issuerLink.href = `https://stellar.expert/explorer/testnet/account/${asset.issuer}`;
+            issuerLink.href = `https://stellar.expert/explorer/public/account/${asset.issuer}`;
             issuerLink.target = '_blank';
             issuerLink.rel = 'noopener noreferrer';
             issuerLink.className = 'issuer-link';
@@ -363,26 +405,29 @@ function getAssetIcon(assetCode) {
     const icons = {
         'XLM': '⭐',
         'USDC': '💵',
+        'yUSDC': '💵',
         'USDT': '💵',
         'BTC': '₿',
         'ETH': 'Ξ',
-        'NALO': '🪙'
+        'NALO': '🪙',
+        'AQUA': '💧',
+        'yXLM': '⭐'
     };
     return icons[assetCode] || '🔷';
 }
 
 /**
- * Load recent transactions
+ * Load recent transactions from PUBLIC network
  */
 async function loadRecentTransactions() {
     try {
-        console.log('Loading recent transactions...');
+        console.log('Loading recent transactions from PUBLIC network...');
         
         // Get transactions
         const transactions = await server.transactions()
             .forAccount(connectedWallet)
             .order('desc')
-            .limit(10)
+            .limit(20)
             .call();
         
         console.log('Transactions loaded:', transactions.records.length);
@@ -392,7 +437,7 @@ async function loadRecentTransactions() {
         
         // Get operations for each transaction to show details
         const transactionsWithDetails = await Promise.all(
-            transactions.records.map(async (tx) => {
+            transactions.records.slice(0, 10).map(async (tx) => {
                 try {
                     const operations = await server.operations()
                         .forTransaction(tx.id)
@@ -413,7 +458,7 @@ async function loadRecentTransactions() {
         document.getElementById('transactionsLoading').style.display = 'none';
         document.getElementById('transactionsError').style.display = 'block';
         document.getElementById('transactionsError').textContent = 
-            'Failed to load transactions. Please try again later.';
+            'Failed to load transactions: ' + (error.message || 'Unknown error');
     }
 }
 
@@ -458,11 +503,15 @@ function displayTransactions(transactionsWithDetails) {
                 txType = 'Account Created';
                 txAmount = parseFloat(op.starting_balance).toFixed(2);
             } else if (op.type === 'change_trust') {
-                txType = 'Trustline Added';
+                txType = 'Trustline';
                 txAsset = op.asset_code || 'XLM';
                 txAmount = '—';
             } else if (op.type === 'manage_buy_offer' || op.type === 'manage_sell_offer') {
                 txType = 'Trade';
+            } else if (op.type === 'path_payment_strict_send' || op.type === 'path_payment_strict_receive') {
+                txType = 'Path Payment';
+                txAmount = parseFloat(op.amount || op.source_amount || 0).toFixed(2);
+                txAsset = op.asset_code || 'XLM';
             } else {
                 txType = op.type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             }
@@ -490,7 +539,7 @@ function displayTransactions(transactionsWithDetails) {
         // Hash with link to Stellar Expert
         const hashCell = document.createElement('td');
         const hashLink = document.createElement('a');
-        hashLink.href = `https://stellar.expert/explorer/testnet/tx/${tx.hash}`;
+        hashLink.href = `https://stellar.expert/explorer/public/tx/${tx.hash}`;
         hashLink.target = '_blank';
         hashLink.rel = 'noopener noreferrer';
         hashLink.className = 'tx-hash';
@@ -509,6 +558,8 @@ function displayTransactions(transactionsWithDetails) {
  * Show error message
  */
 function showError(message) {
+    console.error('Showing error:', message);
+    
     const errorDiv = document.getElementById('transactionsError');
     if (errorDiv) {
         errorDiv.textContent = message;
@@ -516,11 +567,14 @@ function showError(message) {
     }
     
     // Also show in stats
-    document.getElementById('xlmBalance').textContent = 'Not Activated';
-    document.getElementById('usdcBalance').textContent = 'Not Activated';
-    document.getElementById('totalValue').textContent = 'Not Activated';
+    document.getElementById('xlmBalance').textContent = 'Error';
+    document.getElementById('usdcBalance').textContent = 'Error';
+    document.getElementById('totalValue').textContent = 'Error';
     document.getElementById('naloBalance').textContent = '0.00 NALO';
     document.getElementById('totalAssets').textContent = '0';
+    
+    // Hide loading
+    document.getElementById('transactionsLoading').style.display = 'none';
 }
 
 /**
@@ -546,4 +600,4 @@ if (document.readyState === 'loading') {
     initDashboard();
 }
 
-console.log('=== Treasury Dashboard Script Loaded ===');
+console.log('=== Treasury Dashboard Script Loaded (PUBLIC Network) ===');
