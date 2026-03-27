@@ -1,6 +1,6 @@
 /**
  * NaloDAO Treasury Dashboard
- * Displays real-time balance from connected Freighter wallet
+ * Displays complete account balance from connected Freighter wallet
  */
 
 console.log('=== Treasury Dashboard Loading ===');
@@ -21,6 +21,15 @@ const CONFIG = {
     knownAssets: {
         'USDC': ['GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5'],
         'USDT': ['GCQTGZQQ5G4PTM2GL7CDIFKUBIPEC52BROAQIAPW53XBRJVN6ZJVTG6V']
+    },
+    
+    // Asset price estimates (for demo - in production, fetch from price API)
+    assetPrices: {
+        'XLM': 0.10,
+        'USDC': 1.00,
+        'USDT': 1.00,
+        'BTC': 70000.00,
+        'ETH': 3500.00
     }
 };
 
@@ -133,6 +142,9 @@ function showDashboard() {
     document.getElementById('connectPrompt').style.display = 'none';
     document.getElementById('dashboardContent').style.display = 'block';
     
+    // Display connected wallet address
+    document.getElementById('connectedAddress').textContent = connectedWallet;
+    
     // Load dashboard data
     loadDashboardData();
     
@@ -182,12 +194,10 @@ async function loadAccountData() {
         
         console.log('Account data loaded:', accountData);
         
-        // Parse balances
+        // Parse all balances
         let xlmBalance = 0;
-        let usdcBalance = 0;
-        let naloBalance = 0;
         let totalValue = 0;
-        let otherAssets = [];
+        let allAssets = [];
         
         accountData.balances.forEach(balance => {
             const amount = parseFloat(balance.balance);
@@ -195,50 +205,170 @@ async function loadAccountData() {
             if (balance.asset_type === 'native') {
                 // XLM (native asset)
                 xlmBalance = amount;
-                totalValue += amount * 0.10; // Assume $0.10 per XLM for demo
+                const xlmValue = amount * (CONFIG.assetPrices.XLM || 0.10);
+                totalValue += xlmValue;
+                
+                allAssets.push({
+                    code: 'XLM',
+                    issuer: 'Native',
+                    balance: amount,
+                    value: xlmValue,
+                    type: 'native',
+                    limit: null
+                });
             } else {
                 // Custom assets
                 const assetCode = balance.asset_code;
                 const assetIssuer = balance.asset_issuer;
+                const assetLimit = balance.limit ? parseFloat(balance.limit) : null;
                 
-                // Check for USDC
-                if (assetCode === 'USDC' && CONFIG.knownAssets.USDC.includes(assetIssuer)) {
-                    usdcBalance = amount;
-                    totalValue += amount;
+                // Estimate value
+                let assetValue = 0;
+                if (CONFIG.assetPrices[assetCode]) {
+                    assetValue = amount * CONFIG.assetPrices[assetCode];
+                    totalValue += assetValue;
                 }
-                // Check for USDT
-                else if (assetCode === 'USDT' && CONFIG.knownAssets.USDT.includes(assetIssuer)) {
-                    totalValue += amount;
-                    otherAssets.push({ code: assetCode, balance: amount });
-                }
-                // Check for NALO token
-                else if (assetCode === CONFIG.naloAsset.code && assetIssuer === CONFIG.naloAsset.issuer) {
-                    naloBalance = amount;
-                }
-                // Other assets
-                else {
-                    otherAssets.push({ code: assetCode, balance: amount });
-                }
+                
+                allAssets.push({
+                    code: assetCode,
+                    issuer: assetIssuer,
+                    balance: amount,
+                    value: assetValue,
+                    type: 'custom',
+                    limit: assetLimit
+                });
             }
         });
         
-        // Update UI
+        // Sort assets: XLM first, then by balance value
+        allAssets.sort((a, b) => {
+            if (a.type === 'native') return -1;
+            if (b.type === 'native') return 1;
+            return b.value - a.value;
+        });
+        
+        // Update summary stats
+        const usdcAsset = allAssets.find(a => a.code === 'USDC');
+        const naloAsset = allAssets.find(a => a.code === CONFIG.naloAsset.code);
+        
         document.getElementById('xlmBalance').textContent = formatNumber(xlmBalance.toFixed(2)) + ' XLM';
-        document.getElementById('usdcBalance').textContent = '$' + formatNumber(usdcBalance.toFixed(2));
+        document.getElementById('usdcBalance').textContent = '$' + formatNumber((usdcAsset?.balance || 0).toFixed(2));
         document.getElementById('totalValue').textContent = '$' + formatNumber(totalValue.toFixed(2));
-        document.getElementById('naloBalance').textContent = formatNumber(naloBalance.toFixed(2)) + ' NALO';
+        document.getElementById('naloBalance').textContent = formatNumber((naloAsset?.balance || 0).toFixed(2)) + ' NALO';
+        document.getElementById('totalAssets').textContent = allAssets.length;
         
-        // Log other assets if any
-        if (otherAssets.length > 0) {
-            console.log('Other assets found:', otherAssets);
-        }
+        // Display all assets in detailed view
+        displayAllAssets(allAssets);
         
-        console.log('Balances updated:', { xlmBalance, usdcBalance, naloBalance, totalValue });
+        console.log('Account data processed:', { 
+            totalAssets: allAssets.length, 
+            totalValue, 
+            xlmBalance 
+        });
         
     } catch (error) {
         console.error('Error loading account data:', error);
         throw error;
     }
+}
+
+/**
+ * Display all assets in detailed table
+ */
+function displayAllAssets(assets) {
+    const tbody = document.getElementById('assetsTableBody');
+    tbody.innerHTML = '';
+    
+    if (assets.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #666;">No assets found in this wallet.</td></tr>';
+        return;
+    }
+    
+    assets.forEach(asset => {
+        const row = document.createElement('tr');
+        
+        // Asset Code
+        const codeCell = document.createElement('td');
+        const codeDiv = document.createElement('div');
+        codeDiv.style.display = 'flex';
+        codeDiv.style.alignItems = 'center';
+        codeDiv.style.gap = '0.5rem';
+        
+        const assetIcon = document.createElement('span');
+        assetIcon.style.fontSize = '1.5rem';
+        assetIcon.textContent = getAssetIcon(asset.code);
+        
+        const assetName = document.createElement('strong');
+        assetName.textContent = asset.code;
+        
+        codeDiv.appendChild(assetIcon);
+        codeDiv.appendChild(assetName);
+        codeCell.appendChild(codeDiv);
+        row.appendChild(codeCell);
+        
+        // Balance
+        const balanceCell = document.createElement('td');
+        balanceCell.className = 'asset-balance';
+        balanceCell.textContent = formatNumber(asset.balance.toFixed(7));
+        row.appendChild(balanceCell);
+        
+        // Value (USD)
+        const valueCell = document.createElement('td');
+        valueCell.className = 'asset-value';
+        if (asset.value > 0) {
+            valueCell.textContent = '$' + formatNumber(asset.value.toFixed(2));
+        } else {
+            valueCell.textContent = '—';
+            valueCell.style.color = '#999';
+        }
+        row.appendChild(valueCell);
+        
+        // Type
+        const typeCell = document.createElement('td');
+        const typeSpan = document.createElement('span');
+        typeSpan.className = 'asset-type-badge';
+        typeSpan.textContent = asset.type === 'native' ? 'Native' : 'Custom';
+        typeSpan.style.background = asset.type === 'native' ? '#d4edda' : '#d1ecf1';
+        typeSpan.style.color = asset.type === 'native' ? '#155724' : '#0c5460';
+        typeCell.appendChild(typeSpan);
+        row.appendChild(typeCell);
+        
+        // Issuer
+        const issuerCell = document.createElement('td');
+        if (asset.type === 'native') {
+            issuerCell.textContent = 'Stellar Network';
+            issuerCell.style.color = '#666';
+        } else {
+            const issuerLink = document.createElement('a');
+            issuerLink.href = `https://stellar.expert/explorer/testnet/account/${asset.issuer}`;
+            issuerLink.target = '_blank';
+            issuerLink.rel = 'noopener noreferrer';
+            issuerLink.className = 'issuer-link';
+            issuerLink.textContent = asset.issuer.substring(0, 8) + '...' + asset.issuer.substring(asset.issuer.length - 8);
+            issuerCell.appendChild(issuerLink);
+        }
+        row.appendChild(issuerCell);
+        
+        tbody.appendChild(row);
+    });
+    
+    // Show the assets section
+    document.getElementById('assetsSection').style.display = 'block';
+}
+
+/**
+ * Get emoji icon for asset
+ */
+function getAssetIcon(assetCode) {
+    const icons = {
+        'XLM': '⭐',
+        'USDC': '💵',
+        'USDT': '💵',
+        'BTC': '₿',
+        'ETH': 'Ξ',
+        'NALO': '🪙'
+    };
+    return icons[assetCode] || '🔷';
 }
 
 /**
@@ -314,7 +444,7 @@ function displayTransactions(transactionsWithDetails) {
         
         // Type and Amount from operations
         let txType = 'Unknown';
-        let txAmount = '---';
+        let txAmount = '—';
         let txAsset = 'XLM';
         
         if (operations.length > 0) {
@@ -328,8 +458,11 @@ function displayTransactions(transactionsWithDetails) {
                 txType = 'Account Created';
                 txAmount = parseFloat(op.starting_balance).toFixed(2);
             } else if (op.type === 'change_trust') {
-                txType = 'Trustline';
+                txType = 'Trustline Added';
                 txAsset = op.asset_code || 'XLM';
+                txAmount = '—';
+            } else if (op.type === 'manage_buy_offer' || op.type === 'manage_sell_offer') {
+                txType = 'Trade';
             } else {
                 txType = op.type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             }
@@ -387,6 +520,7 @@ function showError(message) {
     document.getElementById('usdcBalance').textContent = 'Not Activated';
     document.getElementById('totalValue').textContent = 'Not Activated';
     document.getElementById('naloBalance').textContent = '0.00 NALO';
+    document.getElementById('totalAssets').textContent = '0';
 }
 
 /**
