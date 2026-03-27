@@ -95,48 +95,6 @@
             padding-bottom: 0.25rem;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: var(--primary-green);
-            padding: 1rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            z-index: 999;
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-menu ul {
-            list-style: none;
-        }
-
-        .mobile-menu li {
-            margin-bottom: 1rem;
-        }
-
-        .mobile-menu a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1.1rem;
-            display: block;
-            padding: 0.5rem;
-        }
-
         /* Whitepaper Container */
         .whitepaper {
             max-width: 900px;
@@ -316,6 +274,24 @@
             background: var(--bg-light);
         }
 
+        /* Images */
+        .diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
         /* Info Boxes */
         .info-box {
             background: #d1ecf1;
@@ -402,6 +378,34 @@
             opacity: 0.8;
         }
 
+        /* Responsive */
+        @media (max-width: 768px) {
+            .whitepaper {
+                margin-top: 80px;
+            }
+
+            .whitepaper-hero h1 {
+                font-size: 2rem;
+            }
+
+            .whitepaper-hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* Back to Top Button */
         .back-to-top {
             position: fixed;
@@ -432,95 +436,6 @@
             background: #f0c14b;
             transform: translateY(-5px);
         }
-
-        /* Responsive */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        @media (max-width: 768px) {
-            .whitepaper {
-                margin-top: 80px;
-                padding: 0 1rem;
-            }
-
-            .whitepaper-hero h1 {
-                font-size: 2rem;
-            }
-
-            .whitepaper-hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .whitepaper-hero .tagline {
-                font-size: 1rem;
-            }
-
-            .content-section {
-                padding: 1.5rem;
-            }
-
-            .content-section h2 {
-                font-size: 1.5rem;
-            }
-
-            .content-section h3 {
-                font-size: 1.25rem;
-            }
-
-            .content-section h4 {
-                font-size: 1.1rem;
-            }
-
-            .toc {
-                padding: 1.5rem;
-            }
-
-            .download-section {
-                padding: 1.5rem;
-            }
-
-            .download-btn {
-                width: 100%;
-                padding: 1rem;
-            }
-
-            table {
-                font-size: 0.85rem;
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .back-to-top {
-                width: 45px;
-                height: 45px;
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .whitepaper-hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .content-section {
-                padding: 1rem;
-            }
-
-            .content-section h2 {
-                font-size: 1.35rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -528,7 +443,6 @@
     <header>
         <nav>
             <a href="index.html" class="logo">🌱 NaloDAO</a>
-            <button class="menu-toggle" aria-label="Toggle menu">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="treasury.html">Treasury</a></li>
@@ -609,13 +523,7 @@
             </ul>
             
             <h3>Misaligned Incentives</h3>
-            <p>The problem isn't lack of solutions. We know how to:</p>
-            <ul>
-                <li>Reforest degraded land</li>
-                <li>Restore coral reefs</li>
-                <li>Build regenerative food systems</li>
-                <li>Decentralize governance</li>
-            </ul>
+            <p>The problem isn't lack of solutions. We know how to reforest degraded land, restore coral reefs, build regenerative food systems, and decentralize governance.</p>
             
             <p><strong>The issue is that incentives are misaligned:</strong></p>
             <ul>
@@ -623,15 +531,6 @@
                 <li>Verification is gatekept by institutions</li>
                 <li>Impact is obscured by paperwork and PR</li>
                 <li>Capital pools at the top instead of circulating through communities</li>
-            </ul>
-
-            <h3>The Need for New Infrastructure</h3>
-            <p>Traditional systems cannot solve problems they were designed to create. We need:</p>
-            <ul>
-                <li><strong>Transparent funding</strong> that reaches grassroots efforts directly</li>
-                <li><strong>Verifiable impact</strong> tracked on-chain, not in closed reports</li>
-                <li><strong>Community governance</strong> where stakeholders have real voice</li>
-                <li><strong>Circular economies</strong> where value flows back to regenerators</li>
             </ul>
         </div>
 
@@ -653,17 +552,6 @@
             <blockquote>
                 "These principles apply to gardens and governance alike. A forest doesn't have a CEO. It has emergent order. So can our economies."
             </blockquote>
-
-            <h3>The Role of Technology</h3>
-            <p>Blockchain, when used with intention, offers:</p>
-            <ul>
-                <li><strong>Transparency</strong> — Where funds go, how votes are cast, what outcomes are achieved</li>
-                <li><strong>Incentivization</strong> — Tokens that reward real-world impact</li>
-                <li><strong>Coordination</strong> — Decentralized governance where every stakeholder has voice</li>
-                <li><strong>Verification</strong> — On-chain proof of regenerative action</li>
-            </ul>
-            
-            <p>But technology alone is not enough. It must be rooted in place, guided by wisdom, and wielded with care.</p>
         </div>
 
         <!-- What is NaloDAO -->
@@ -730,7 +618,6 @@
             <h3>1. 🌍 Earth Care</h3>
             <p><strong>Regenerating the Source</strong></p>
             <p>Earth is not a backdrop to the economy—it is the foundation of all wealth.</p>
-            
             <p><strong>Earth Care means:</strong></p>
             <ul>
                 <li>Protecting and restoring ecosystems</li>
@@ -738,12 +625,9 @@
                 <li>Honoring land as a living being</li>
             </ul>
             
-            <p>In NaloDAO's economy, Earth is an active stakeholder. Projects that heal land, water, and air are prioritized. Impact is measured in trees planted, topsoil built, and biodiversity restored—not profit margins.</p>
-            
             <h3>2. 🤝 People Care</h3>
             <p><strong>Empowering the Stewards</strong></p>
             <p>Healthy systems depend on healthy people.</p>
-            
             <p><strong>People Care means:</strong></p>
             <ul>
                 <li>Supporting local leadership and cultural wisdom</li>
@@ -751,19 +635,9 @@
                 <li>Ensuring all participants feel seen, heard, and valued</li>
             </ul>
             
-            <p>NaloDAO is designed for inclusivity: mobile-first tools, language accessibility, onboarding for non-tech users, and funding models that compensate not just coders, but cooks, caregivers, and composters.</p>
-            
             <h3>3. ⚖️ Fair Share</h3>
             <p><strong>Rebalancing the Flow</strong></p>
             <p>Fair Share is about equity, not charity.</p>
-            
-            <p><strong>Fair Share asks:</strong></p>
-            <ul>
-                <li>Who holds power?</li>
-                <li>Who receives value?</li>
-                <li>How do we design for circulation instead of concentration?</li>
-            </ul>
-            
             <p><strong>NaloDAO's economic model includes:</strong></p>
             <ul>
                 <li>Transparent token distribution</li>
@@ -771,8 +645,6 @@
                 <li>Cooperative ownership structures</li>
                 <li>Capped gains to prevent wealth concentration</li>
             </ul>
-            
-            <p>Fair Share doesn't mean everyone gets the same—it means everyone gets enough to thrive, contribute, and grow.</p>
         </div>
 
         <!-- NALO Token -->
@@ -797,25 +669,8 @@
                 <li><strong>Circular flow</strong> — Tokens circulate through the ecosystem, not extracted</li>
                 <li><strong>Earned value</strong> — Distributed through contribution, not just capital</li>
             </ul>
-
-            <h3>How NALO Flows: The Regenerative Cycle</h3>
-            <p><strong>The circular economy in action:</strong></p>
-            <ol>
-                <li><strong>FUNDING</strong> → Donors/Funders → Treasury</li>
-                <li><strong>DISTRIBUTION</strong> → Treasury → Approved Projects</li>
-                <li><strong>EXECUTION</strong> → Projects → On-Ground Work</li>
-                <li><strong>VERIFICATION</strong> → Evidence → Validation System</li>
-                <li><strong>REWARDS</strong> → Verified Impact → Contributors</li>
-                <li><strong>REINVESTMENT</strong> → Portion → Commons Fund</li>
-                <li><strong>CIRCULATION</strong> → Back to Step 1 (Continuous Loop)</li>
-            </ol>
             
-            <p>This keeps value flowing through the ecosystem rather than concentrating at the top.</p>
-
             <h3>Tokenomics Overview</h3>
-            <p><strong>Total Supply:</strong> To be determined through community governance</p>
-            
-            <h4>Distribution Breakdown</h4>
             <table>
                 <thead>
                     <tr>
@@ -852,91 +707,10 @@
                     </tr>
                 </tbody>
             </table>
-
-            <h4>Stability Mechanisms</h4>
-            <p><strong>Protecting Long-Term Value:</strong></p>
-            <ul>
-                <li><strong>Bonding Curves</strong> — Control token issuance rate</li>
-                <li><strong>Reserve Pools</strong> — Backed by stablecoins (USDC, yUSDC)</li>
-                <li><strong>Time Locks</strong> — Prevent sudden dumps</li>
-                <li><strong>Vesting Schedules</strong> — Gradual release for team tokens</li>
-                <li><strong>Governance Controls</strong> — Community-approved minting</li>
-            </ul>
-
-            <h3>Use Cases in Practice</h3>
             
-            <h4>Scenario 1: The Permaculture Teacher</h4>
-            <p><strong>Maria in Costa Rica:</strong></p>
-            <ol>
-                <li><strong>Proposes</strong> a school food forest project</li>
-                <li><strong>Receives</strong> 5,000 NALO in funding</li>
-                <li><strong>Executes</strong> planting 200 trees, building swales</li>
-                <li><strong>Submits</strong> photos, GPS data, student testimonials</li>
-                <li><strong>Earns</strong> additional 2,000 NALO for verified impact</li>
-                <li><strong>Uses</strong> tokens to vote on other proposals and exchange for local goods</li>
-            </ol>
-
-            <h4>Scenario 2: The Tech Builder</h4>
-            <p><strong>James in Kenya:</strong></p>
-            <ol>
-                <li><strong>Develops</strong> mobile verification app</li>
-                <li><strong>Submits</strong> code to open-source repository</li>
-                <li><strong>Receives</strong> 3,000 NALO for contribution</li>
-                <li><strong>Stakes</strong> tokens for enhanced governance weight</li>
-                <li><strong>Votes</strong> on technical roadmap decisions</li>
-                <li><strong>Earns</strong> ongoing rewards for maintenance</li>
-            </ol>
-
-            <h4>Scenario 3: The Community Organizer</h4>
-            <p><strong>Amara in Brazil:</strong></p>
-            <ol>
-                <li><strong>Starts</strong> a Living Library in her favela</li>
-                <li><strong>Receives</strong> 10,000 NALO seed funding</li>
-                <li><strong>Hosts</strong> weekly composting workshops</li>
-                <li><strong>Verifies</strong> local regenerative projects</li>
-                <li><strong>Earns</strong> 500 NALO per month for coordination</li>
-                <li><strong>Exchanges</strong> tokens for tools and materials</li>
-            </ol>
-
-            <h3>What Makes NALO Different?</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Traditional Crypto</th>
-                        <th>NALO Token</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Speculation-driven</td>
-                        <td>Impact-driven</td>
-                    </tr>
-                    <tr>
-                        <td>Value from hype</td>
-                        <td>Value from real work</td>
-                    </tr>
-                    <tr>
-                        <td>Concentrated wealth</td>
-                        <td>Distributed rewards</td>
-                    </tr>
-                    <tr>
-                        <td>No real-world tie</td>
-                        <td>Tied to regeneration</td>
-                    </tr>
-                    <tr>
-                        <td>Pump and dump</td>
-                        <td>Slow and steady</td>
-                    </tr>
-                    <tr>
-                        <td>Anonymous holders</td>
-                        <td>Verified contributors</td>
-                    </tr>
-                    <tr>
-                        <td>Extractive</td>
-                        <td>Regenerative</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="info-box">
+                <strong>Note:</strong> Detailed tokenomics, including total supply and distribution schedules, will be determined through community governance.
+            </div>
         </div>
 
         <!-- How It Works -->
@@ -944,7 +718,6 @@
             <h2>How NaloDAO Works</h2>
             
             <h3>The Regenerative Loop</h3>
-            <p><strong>Step-by-step process:</strong></p>
             <ol>
                 <li><strong>PROPOSE</strong> → Community member submits regenerative project</li>
                 <li><strong>VOTE</strong> → DAO members review and vote on proposal</li>
@@ -954,9 +727,8 @@
                 <li><strong>REWARD</strong> → Verified impact triggers token distribution</li>
                 <li><strong>REINVEST</strong> → Portion flows back to commons fund</li>
             </ol>
-
+            
             <h3>Verification System: Proof of Regeneration (PoR)</h3>
-            <p>NaloDAO uses a multi-layered verification system:</p>
             
             <h4>Level 1: Self-Reporting</h4>
             <ul>
@@ -980,43 +752,6 @@
                 <li>Blockchain oracles</li>
                 <li>Third-party audits (for large projects)</li>
             </ul>
-
-            <h3>Roles in the DAO</h3>
-            
-            <h4>🌱 Contributor</h4>
-            <ul>
-                <li>Complete regenerative tasks</li>
-                <li>Submit proof of work</li>
-                <li>Earn NALO rewards</li>
-            </ul>
-            
-            <h4>🌿 Proposer</h4>
-            <ul>
-                <li>Submit project proposals</li>
-                <li>Present to community</li>
-                <li>Receive funding if approved</li>
-            </ul>
-            
-            <h4>🌳 Verifier</h4>
-            <ul>
-                <li>Confirm project outcomes</li>
-                <li>Conduct field visits</li>
-                <li>Review evidence submissions</li>
-            </ul>
-            
-            <h4>🌀 Circle Member</h4>
-            <ul>
-                <li>Join working groups (Governance, Tech, Land, Education)</li>
-                <li>Co-create policy and tools</li>
-                <li>Guide strategic direction</li>
-            </ul>
-            
-            <h4>🗳️ Voter</h4>
-            <ul>
-                <li>Participate in governance</li>
-                <li>Vote on proposals</li>
-                <li>Shape DAO evolution</li>
-            </ul>
         </div>
 
         <!-- Living Libraries -->
@@ -1032,7 +767,7 @@
                 <li>A node in the global NaloDAO network</li>
                 <li>A place where regeneration is practiced, not just discussed</li>
             </ul>
-
+            
             <h3>Functions of Living Libraries</h3>
             
             <h4>Education</h4>
@@ -1056,24 +791,6 @@
                 <li>Project planning and collaboration</li>
                 <li>Community events and ceremonies</li>
             </ul>
-            
-            <h4>Verification</h4>
-            <ul>
-                <li>On-ground validation of local projects</li>
-                <li>Documentation and storytelling</li>
-                <li>Impact measurement</li>
-            </ul>
-
-            <h3>How to Start a Living Library</h3>
-            <ol>
-                <li><strong>Gather Community</strong> — Find 3-5 committed stewards</li>
-                <li><strong>Secure Land</strong> — Access to space (owned, leased, or commons)</li>
-                <li><strong>Submit Proposal</strong> — Apply for NaloDAO funding</li>
-                <li><strong>Build Infrastructure</strong> — Start with basics (compost, garden beds, meeting space)</li>
-                <li><strong>Connect Digitally</strong> — Set up wallets, join DAO platforms</li>
-                <li><strong>Document & Share</strong> — Submit proof of regeneration, earn rewards</li>
-                <li><strong>Grow Network</strong> — Connect with other Living Libraries globally</li>
-            </ol>
         </div>
 
         <!-- Technology Stack -->
@@ -1089,7 +806,7 @@
                 <li>🌍 <strong>Built for financial inclusion</strong> — Designed for global access</li>
                 <li>🔒 <strong>Secure and battle-tested</strong> — Proven technology</li>
             </ul>
-
+            
             <h3>Smart Contracts</h3>
             <p>Automated agreements that execute when conditions are met:</p>
             <ul>
@@ -1098,22 +815,6 @@
                 <li>Enforce governance decisions</li>
                 <li>Manage token economics</li>
             </ul>
-
-            <h3>Oracles: Bridging Physical & Digital</h3>
-            <p><strong>Oracles bring real-world data on-chain:</strong></p>
-            <ul>
-                <li>GPS coordinates from field work</li>
-                <li>Photos and videos of projects</li>
-                <li>Sensor data (soil health, water quality)</li>
-                <li>Community validation signatures</li>
-            </ul>
-
-            <h3>Decentralized Identity (DID)</h3>
-            <ul>
-                <li>Verify participants without invading privacy</li>
-                <li>Build reputation over time</li>
-                <li>Enable trust without centralized databases</li>
-            </ul>
         </div>
 
         <!-- Governance -->
@@ -1121,60 +822,20 @@
             <h2>Governance Model</h2>
             
             <h3>Decision-Making Process</h3>
+            <ol>
+                <li><strong>Proposal Submission</strong> — Any member can submit with minimum NALO stake</li>
+                <li><strong>Discussion Period</strong> — Community reviews and provides feedback (7-14 days)</li>
+                <li><strong>Voting Period</strong> — Token-weighted voting with quorum requirements (3-7 days)</li>
+                <li><strong>Execution</strong> — Approved proposals automatically funded via smart contracts</li>
+            </ol>
             
-            <h4>1. Proposal Submission</h4>
-            <ul>
-                <li>Any member can submit a proposal</li>
-                <li>Requires minimum NALO stake</li>
-                <li>Must include clear objectives and budget</li>
-            </ul>
-            
-            <h4>2. Discussion Period</h4>
-            <ul>
-                <li>Community reviews and provides feedback</li>
-                <li>Proposer can revise based on input</li>
-                <li>Typically 7-14 days</li>
-            </ul>
-            
-            <h4>3. Voting Period</h4>
-            <ul>
-                <li>Token-weighted voting</li>
-                <li>Quorum requirements</li>
-                <li>Typically 3-7 days</li>
-            </ul>
-            
-            <h4>4. Execution</h4>
-            <ul>
-                <li>Approved proposals automatically funded</li>
-                <li>Smart contracts release resources</li>
-                <li>Progress tracked transparently</li>
-            </ul>
-
             <h3>Governance Circles</h3>
-            <p><strong>Core Circles:</strong></p>
             <ul>
                 <li>🌍 <strong>Land & Ecology</strong> — Project evaluation, verification standards</li>
                 <li>💻 <strong>Technology</strong> — Platform development, security, infrastructure</li>
                 <li>📚 <strong>Education</strong> — Curriculum, workshops, onboarding</li>
                 <li>💰 <strong>Treasury</strong> — Financial management, token economics</li>
                 <li>🤝 <strong>Community</strong> — Culture, conflict resolution, inclusion</li>
-            </ul>
-
-            <h3>Voting Power</h3>
-            <p><strong>Token-weighted with safeguards:</strong></p>
-            <ul>
-                <li>1 NALO = 1 vote (base)</li>
-                <li>Contribution multipliers (verified impact increases weight)</li>
-                <li>Quadratic voting for key decisions (prevents plutocracy)</li>
-                <li>Delegation options (lend voting power to trusted members)</li>
-            </ul>
-
-            <h3>Checks & Balances</h3>
-            <ul>
-                <li><strong>Veto power</strong> for critical decisions (requires supermajority)</li>
-                <li><strong>Time locks</strong> on major changes (cooling-off periods)</li>
-                <li><strong>Multi-sig treasury</strong> (requires multiple signatures for large withdrawals)</li>
-                <li><strong>Emergency pause</strong> (community can halt operations if needed)</li>
             </ul>
         </div>
 
@@ -1226,47 +887,38 @@
             <h3>For Land Stewards</h3>
             <p><strong>You are the foundation of this movement.</strong></p>
             <ol>
-                <li><strong>Start a Living Library</strong> in your bioregion</li>
-                <li><strong>Submit projects</strong> for funding (food forests, compost systems, water harvesting)</li>
-                <li><strong>Document your work</strong> and earn NALO rewards</li>
-                <li><strong>Share knowledge</strong> through workshops and mentorship</li>
+                <li>Start a Living Library in your bioregion</li>
+                <li>Submit projects for funding</li>
+                <li>Document your work and earn NALO rewards</li>
+                <li>Share knowledge through workshops</li>
             </ol>
             
             <h3>For Technologists</h3>
             <p><strong>Build the infrastructure for regeneration.</strong></p>
             <ol>
-                <li><strong>Contribute code</strong> to open-source repositories</li>
-                <li><strong>Develop verification tools</strong> (oracles, mobile apps)</li>
-                <li><strong>Improve platform UX</strong> for non-technical users</li>
-                <li><strong>Create data visualizations</strong> for impact tracking</li>
+                <li>Contribute code to open-source repositories</li>
+                <li>Develop verification tools</li>
+                <li>Improve platform UX</li>
+                <li>Create data visualizations</li>
             </ol>
             
             <h3>For Educators</h3>
             <p><strong>Spread regenerative literacy.</strong></p>
             <ol>
-                <li><strong>Create curriculum</strong> for DAO and blockchain education</li>
-                <li><strong>Host workshops</strong> at Living Libraries</li>
-                <li><strong>Produce content</strong> (videos, guides, translations)</li>
-                <li><strong>Mentor new members</strong> through onboarding</li>
-            </ol>
-            
-            <h3>For Funders</h3>
-            <p><strong>Direct capital toward real impact.</strong></p>
-            <ol>
-                <li><strong>Purchase NALO</strong> to support the treasury</li>
-                <li><strong>Vote on proposals</strong> that align with your values</li>
-                <li><strong>Sponsor Living Libraries</strong> in specific regions</li>
-                <li><strong>Provide expertise</strong> in finance, legal, or strategy</li>
+                <li>Create curriculum for DAO education</li>
+                <li>Host workshops at Living Libraries</li>
+                <li>Produce content (videos, guides)</li>
+                <li>Mentor new members</li>
             </ol>
             
             <h3>For Everyone</h3>
             <p><strong>Every role matters.</strong></p>
             <ol>
-                <li><strong>Join the community</strong> (Discord, Telegram, Forum)</li>
-                <li><strong>Set up a wallet</strong> and receive NALO</li>
-                <li><strong>Participate in governance</strong> by voting on proposals</li>
-                <li><strong>Share the vision</strong> with your networks</li>
-                <li><strong>Start small</strong> — compost, plant, learn, connect</li>
+                <li>Join the community (Discord, Telegram)</li>
+                <li>Set up a wallet and receive NALO</li>
+                <li>Participate in governance</li>
+                <li>Share the vision</li>
+                <li>Start small — compost, plant, learn, connect</li>
             </ol>
         </div>
 
@@ -1285,14 +937,7 @@
             </ul>
             
             <p>This is not fantasy. This is the world NaloDAO is building—one garden, one token, one community at a time.</p>
-
-            <h3>From Extraction to Regeneration</h3>
-            <p>We stand at a threshold. The old economy is collapsing under its own weight. The new economy is emerging from the soil, from the commons, from the collective wisdom of those who never stopped caring.</p>
             
-            <p><strong>NaloDAO is infrastructure for that emergence.</strong></p>
-            
-            <p>We are not trying to save the world. We are trying to create the conditions for life to save itself—by empowering the people who are already doing the work.</p>
-
             <h3>The Invitation</h3>
             <p>This whitepaper is not just information. <strong>It is an invitation.</strong></p>
             
@@ -1393,45 +1038,6 @@
         document.getElementById('backToTop').addEventListener('click', function(e) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Mobile menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                let mobileMenu = document.querySelector('.mobile-menu');
-                
-                if (!mobileMenu) {
-                    mobileMenu = document.createElement('div');
-                    mobileMenu.className = 'mobile-menu';
-                    mobileMenu.innerHTML = navLinks.innerHTML;
-                    document.body.appendChild(mobileMenu);
-                }
-                
-                mobileMenu.classList.toggle('active');
-                
-                if (mobileMenu.classList.contains('active')) {
-                    menuToggle.textContent = '✕';
-                } else {
-                    menuToggle.textContent = '☰';
-                }
-            });
-        }
-        
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (mobileMenu && mobileMenu.classList.contains('active')) {
-                if (!mobileMenu.contains(event.target) && event.target !== menuToggle) {
-                    mobileMenu.classList.remove('active');
-                    if (menuToggle) {
-                        menuToggle.textContent = '☰';
-                    }
-                }
-            }
         });
     </script>
 </body>
